@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="com.appli.ilink.ModifyProfileActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_modify_account"
+            android:id="@+id/accountModifyTitleLabel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/last_name_label"
+            android:id="@+id/lastnameModifyAccountViewLabel"
+            android:layout_below="@+id/accountModifyTitleLabel"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:textStyle="bold"
+            android:textSize="20sp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/last_name_show"
+            android:id="@+id/lastnameModifyAccountView"
+            android:layout_below="@+id/accountModifyTitleLabel"
+            android:layout_toRightOf="@+id/lastnameModifyAccountViewLabel"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/first_name_label"
+            android:id="@+id/firstnameModifyAccountViewLabel"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/lastnameModifyAccountViewLabel"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/first_name_show"
+            android:id="@+id/firstnameModifyAccountView"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/lastnameModifyAccountView"
+            android:layout_toRightOf="@+id/firstnameModifyAccountViewLabel"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phone_name_label"
+            android:id="@+id/phoneModifyAccountViewLabel"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/firstnameModifyAccountViewLabel"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phone_name_show"
+            android:id="@+id/phoneModifyAccountView"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/phoneModifyAccountViewLabel"
+            android:layout_below="@+id/firstnameModifyAccountViewLabel"
+            android:layout_marginLeft="20dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email_label"
+            android:id="@+id/emailModifyAccountViewLabel"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/phoneModifyAccountViewLabel"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email_show"
+            android:id="@+id/emailModifyAccountView"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/phoneModifyAccountViewLabel"
+            android:layout_toRightOf="@+id/emailModifyAccountViewLabel"
+            android:textSize="20sp" />
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/layoutModifyAccountButton"
+            android:layout_below="@+id/emailModifyAccountViewLabel"
+            android:padding="20dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_register_account"
+                android:id="@+id/button_modify_password"
+                android:background="@drawable/first_button"
+                android:layout_marginRight="10dp"
+                android:textColor="#fff" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_modify_password"
+                android:id="@+id/button_register_profile"
+                android:background="@drawable/first_button"
+                android:textColor="#fff" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</ScrollView>
+

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.appli.ilink.LocalisationActivity">
+    <fragment  android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/mapLocalisation"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="false"
+        tools:ignore="RtlCompat"
+        android:layout_alignParentBottom="false"
+        android:padding="26dp"
+        android:gravity="center"
+        android:id="@+id/notlocatedLayout"
+        android:background="#fff">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_located"
+            android:id="@+id/textLocated"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginRight="20dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageLocated"
+            android:src="@drawable/gps_not_located" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="false"
+        tools:ignore="RtlCompat"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/notlocatedLayout"
+        android:gravity="center"
+        android:background="#fff">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:id="@+id/textLatitude" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:id="@+id/textLongitude" />
+
+    </LinearLayout>
+
+</RelativeLayout>

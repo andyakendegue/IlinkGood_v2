@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.appli.ilink.GeneralMapFragment"
+    android:id="@+id/maplayout2">
+    <fragment
+        android:id="@+id/genralMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.google.android.gms.maps.SupportMapFragment" />
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:padding="26dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <ToggleButton
+            android:textColor="#fff"
+            android:id="@+id/sendReseau2"
+            android:background="@drawable/second_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="Mon réseau "
+            android:textOff="Tout le réseau"
+            android:text="Route" />
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/imageBtnRoute2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_directions"
+        android:layout_alignWithParentIfMissing="false" />
+    <Button
+        android:textSize="11sp"
+        android:textColor="#fff"
+        android:id="@+id/sendRoute2"
+        android:background="@drawable/second_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:text="Trouvez votre chemin"
+        android:layout_toRightOf="@+id/imageBtnRoute2" />
+</RelativeLayout>

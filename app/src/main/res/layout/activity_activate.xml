@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.appli.ilink.ActivateActivity">
+    <TextView
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center_horizontal"
+        android:id="@+id/textValidation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Saisissez le code de validation reçu"
+        android:layout_alignParentTop="true" />
+    <EditText
+        android:id="@+id/editTextValidation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/textValidation" />
+    <TextView
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/textNombreMembres"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Combien de superviseurs dans votre réseau?"
+        android:layout_below="@+id/editTextValidation"
+        android:inputType="number" />
+    <EditText
+        android:id="@+id/editTextNombreMembres"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/textNombreMembres"
+        android:layout_centerHorizontal="true"
+        android:inputType="number" />
+    <TextView android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/textNombreGeo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Combien de membres Geolocalise par superviseurs?"
+        android:layout_below="@+id/editTextNombreMembres" />
+    <EditText
+        android:id="@+id/editTextNombreGeo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/textNombreGeo" />
+    <Button
+        android:textColor="#fff"
+        android:id="@+id/btnValidate"
+        android:background="@drawable/first_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Valider"
+        android:layout_below="@+id/editTextNombreGeo"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

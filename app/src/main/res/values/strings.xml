@@ -1,0 +1,168 @@
+<resources>
+    <string name="app_name">ILink</string>
+    <string name="title_activity_home">Accueil</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string-array name="country_code">
+        <item>Burkina-Faso</item>
+        <item>Cameroun</item>
+        <item>France</item>
+        <item>Gabon</item>
+    </string-array>
+
+    <string-array name="network_burkina">
+        <item>TELMOB/ONATEL</item>
+        <item>AIRTEL</item>
+        <item>TELECEL</item>
+    </string-array>
+
+    <string-array name="network_cameroun">
+        <item>MTN</item>
+        <item>ORANGE</item>
+        <item>NEXTTEL</item>
+        <item>CAMTEL MOBILE</item>
+    </string-array>
+
+    <string-array name="network_france">
+        <item>ORANGE</item>
+        <item>SFR</item>
+        <item>BOUYGUES TELECOM</item>
+        <item>FREE MOBILE</item>
+    </string-array>
+
+    <string-array name="network_gabon">
+        <item>AIRTEL</item>
+        <item>LIBERTIS</item>
+        <item>MOOV</item>
+        <item>AZUR</item>
+    </string-array>
+
+    <string-array name="nombre_membres">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+        <item>110</item>
+        <item>120</item>
+        <item>130</item>
+        <item>140</item>
+        <item>150</item>
+        <item>160</item>
+        <item>170</item>
+        <item>180</item>
+        <item>190</item>
+        <item>200</item>
+
+    </string-array>
+
+
+    <string-array name="distance_minimale">
+        <item>500m</item>
+        <item>1km</item>
+        <item>1,5km</item>
+        <item>2km</item>
+        <item>2,5km</item>
+        <item>3km</item>
+        <item>4km</item>
+        <item>5km</item>
+        <item>6km</item>
+        <item>7km</item>
+        <item>8km</item>
+        <item>9km</item>
+        <item>10km</item>
+        <item>20km</item>
+        <item>30km</item>
+        <item>50km</item>
+        <item>100km</item>
+        <item>200km</item>
+        <item>Tous les points</item>
+    </string-array>
+
+
+    <string-array name="montant_transaction">
+        <item>0 - 5000</item>
+        <item>5000 - 10000</item>
+        <item>10000 - 50000</item>
+        <item>50000 - 100000</item>
+        <item>100000 - 500000</item>
+        <item>500000 - 1000000</item>
+    </string-array>
+    <string name="title_activity_accueil">Accueil</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="accueil">Accueil</string>
+    <string name="title_ask_credit">DEMANDEZ DU CREDIT</string>
+    <string name="title_ammount">MONTANT</string>
+    <string name="button_ask_credit">DEMANDER</string>
+    <string name="title_activity_superviseur_home">Superviseur</string>
+    <string name="title_activity_hyperviseur">Hyperviseur</string>
+    <string name="title_activity_hyperviseur_home">Hyperviseur</string>
+    <string name="title_inscription">S\'inscrire</string>
+    <string name="title_connect">Se connecter</string>
+    <string name="title_not_located">Se connecter</string>
+    <string name="title_located">Se connecter</string>
+    <string name="text_located">Pas encore localisé</string>
+    <string name="mon_compte">Mon compte</string>
+    <string name="last_name_label">Nom</string>
+    <string name="last_name_show">Votre nom</string>
+    <string name="first_name_label">Prenom</string>
+    <string name="first_name_show">Votre prenom</string>
+    <string name="phone_name_label">Telephone</string>
+    <string name="phone_name_show">Votre numero</string>
+    <string name="email_label">Email</string>
+    <string name="email_show">Votre Email</string>
+    <string name="subscription_label">Abonnement</string>
+    <string name="subscription_show">Etat abonnement</string>
+    <string name="solde_initial">0CFA</string>
+    <string name="solde_label">SOLDE</string>
+    <string name="button_modify_account">Modifier mes infos</string>
+    <string name="button_register_account">Enregistrer mes infos</string>
+    <string name="button_subscribe">Se reabonner</string>
+    <string name="button_modify_password">Modifier mot de passe</string>
+    <string name="btnHome2">Geo Localisation</string>
+    <string name="btnHome3">Devenir Superviseur</string>
+    <string name="btnHome4">Affiner Votre Recherche</string>
+    <string name="btnHome5">Trouver un Ami</string>
+    <string name="btnHome6">Besoin d\'aide</string>
+    <string name="btnHome7">A propos de</string>
+    <string name="switch_localisation">Souhaitez vous être localisé?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_sera_supprime">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."</string>
+    <string name="action_logout">Deconnexion</string>
+    <string name="msg_enter_mobile">Entrer message</string>
+    <string name="lbl_name">Name</string>
+    <string name="lbl_email">Email</string>
+    <string name="lbl_mobile">Libelle mobile</string>
+    <string name="lbl_next">libelle next</string>
+    <string name="msg_sit_back">message sit back</string>
+    <string name="msg_manual_otp">message manual otp</string>
+    <string name="ic_edit_mobile">libelle enfer otp</string>
+    <string name="lbl_enter_otp">libelle enfer otp</string>
+    <string name="lbl_submit">libelle enfer otp</string>
+    <string name="title_activity_test">Map</string>
+</resources>

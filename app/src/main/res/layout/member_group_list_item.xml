@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nom"
+        android:id="@+id/textMemberGroupName"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_alignParentRight="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Solde"
+        android:id="@+id/textMemberGroupAmount"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_alignParentRight="false"
+        android:layout_alignRight="@+id/textMemberGroupAdress"
+        android:textColor="#FF0004" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Adresse"
+        android:id="@+id/textMemberGroupAdress"
+        android:textSize="20sp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/textMemberGroupName" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Adresse"
+        android:id="@+id/textMemberGroupPhone"
+        android:textSize="18sp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/textMemberGroupAdress" />
+
+
+</RelativeLayout>

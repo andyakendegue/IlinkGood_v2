@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "977249633956",
+    "firebase_url": "https://ilink-144212.firebaseio.com",
+    "project_id": "ilink-144212",
+    "storage_bucket": "ilink-144212.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977249633956:android:46037a476378ab5f",
+        "android_client_info": {
+          "package_name": "com.appli.ilink"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "977249633956-210kh9o3u7qsv8inc28khu6b8aa5ku81.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appli.ilink",
+            "certificate_hash": "5DD0F12B8D0F6B185C498A91BE560D0EB8D8EF84"
+          }
+        },
+        {
+          "client_id": "977249633956-uq14bstp132p9mdfc6o3g6rjseok0b12.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClcaXrEuBQOAZau4erV47Rgjse-rVGbg8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "977249633956-uq14bstp132p9mdfc6o3g6rjseok0b12.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

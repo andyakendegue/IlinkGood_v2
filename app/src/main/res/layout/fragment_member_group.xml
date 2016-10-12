@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.appli.ilink.MemberGroupFragment" >
+    <RelativeLayout
+    android:id="@+id/linearLayoutMembers"
+    android:background="@color/colorPrimaryDark"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
+        <TextView
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:layout_gravity="center"
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Classez vos membres"
+            android:layout_centerVertical="true" />
+        <ImageButton
+            android:layout_gravity="right"
+            android:id="@+id/imgBtnUp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_up"
+            android:layout_toLeftOf="@+id/imgBtnDown" />
+        <ImageButton
+            android:layout_gravity="right"
+            android:id="@+id/imgBtnDown"
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_down"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/swipeRefreshLayoutMemberGroup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+        <ListView android:id="@+id/listMemberGroupAll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

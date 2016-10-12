@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="com.appli.ilink.AskCreditFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:textSize="27sp"
+            android:textStyle="bold"
+            android:id="@+id/titleAskCredit"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="@string/title_ask_credit"
+            android:layout_centerHorizontal="true" />
+        <EditText
+            android:id="@+id/editAmmount"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
+            android:hint="@string/title_ammount"
+            android:layout_below="@+id/titleAskCredit"
+            android:layout_centerHorizontal="true" />
+        <Button
+            android:textColor="#fff"
+            android:id="@+id/btnAskCredit"
+            android:background="@drawable/first_button"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/button_ask_credit"
+            android:layout_below="@+id/editAmmount"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+</FrameLayout>

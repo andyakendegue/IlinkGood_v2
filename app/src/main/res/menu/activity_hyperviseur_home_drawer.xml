@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:icon="@drawable/general_network" android:id="@+id/group_map" android:title="Carte de mon Groupe" />
+    <item android:icon="@drawable/general_network" android:id="@+id/group_members" android:title="Les membres du Groupe" />
+    <item android:icon="@drawable/general_network" android:id="@+id/group_ask_superviseur" android:title="Demandes de Superviseurs" />
+    <item android:icon="@drawable/account" android:id="@+id/my_account_hyper" android:title="Mon Compte" />
+    <item android:icon="@drawable/exit" android:id="@+id/exit" android:title="Deconnexion" />
+</menu>

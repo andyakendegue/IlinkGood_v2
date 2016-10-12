@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:icon="@drawable/general_network" android:id="@+id/group_map" android:title="Carte de mon Groupe" />
+    <item android:icon="@drawable/general_network" android:id="@+id/group_members" android:title="Les membres du Groupe" />
+    <item android:icon="@drawable/general_network" android:id="@+id/group_ask_geolocated" android:title="Demandes" />
+    <item android:icon="@drawable/general_network" android:id="@+id/group_ask_credit" android:title="Demandes de Crédit" />
+    <item android:icon="@drawable/account" android:id="@+id/ask_hypervisor" android:title="Devenir Hyperviseur" />
+    <item android:icon="@drawable/account" android:id="@+id/my_account_hyper" android:title="Mon Compte" />
+    <item android:icon="@drawable/exit" android:id="@+id/exit" android:title="Deconnexion" />
+</menu>
