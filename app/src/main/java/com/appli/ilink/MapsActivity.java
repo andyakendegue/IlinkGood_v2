@@ -317,7 +317,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-        getnetworkList();
+        //getnetworkList();
+
+        new CheckLocations().execute();
 
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -2062,7 +2064,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public void onResponse(JSONArray response) {
                         hidePDialog();
-                        new CheckLocations().execute();
+
                         Log.d(TAG, response.toString());
 
 
