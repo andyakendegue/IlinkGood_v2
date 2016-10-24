@@ -58,9 +58,12 @@ public class MemberGroupFragment extends Fragment implements OnItemClickListener
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String DELETE_URL = "http://ilink-app.com/app/select/delete.php";
+    private static final String DELETE_URL = "https://ilink-app.com/app/select/delete.php";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PHONE = "phone";
+    public static final String KEY_NETWORK = "network";
+    public static final String KEY_MEMBER_CODE = "member_code";
+    public static final String KEY_CATEGORY = "category";
     private static final String TAG;
     private memberGroupAdapter adapter;
     DatabaseHandler db;
@@ -224,7 +227,7 @@ public class MemberGroupFragment extends Fragment implements OnItemClickListener
         @Override
         protected void onPostExecute(Boolean th) {
 
-            if (th == true) {
+            if (th) {
                 pDialog.dismiss();
                 deleteFromBdd();
             } else {
@@ -334,7 +337,7 @@ public class MemberGroupFragment extends Fragment implements OnItemClickListener
                 .show();
 
 
-        String url = "http://ilink-app.com/app/select/locations.php";
+        String url = "https://ilink-app.com/app/select/locations.php";
         // Creating volley request obj
         JsonArrayRequest movieReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -370,6 +373,7 @@ public class MemberGroupFragment extends Fragment implements OnItemClickListener
                                     members.setBalance(obj.getString("balance"));
                                     members.setAdress(obj.getString("firstname"));
                                     members.setPhone(obj.getString("phone"));
+                                    members.setActive(obj.getString("active"));
                                     // adding movie to movies array
                                     memberGroupList.add(members);
                                     if (obj.getString("member_code").equals(phone)) {
@@ -419,7 +423,7 @@ public class MemberGroupFragment extends Fragment implements OnItemClickListener
         memberGroupList.clear();
 
 
-        String url = "http://ilink-app.com/app/select/locations.php";
+        String url = "https://ilink-app.com/app/select/locations.php";
         // Creating volley request obj
         JsonArrayRequest movieReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -434,21 +438,19 @@ public class MemberGroupFragment extends Fragment implements OnItemClickListener
                                 JSONObject obj = response.getJSONObject(i);
 
 
-                                final String email = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
                                 final String phone = sharedPreferences.getString(Config.PHONE_SHARED_PREF, "Not Available");
-                                final String network = sharedPreferences.getString(Config.NETWORK_SHARED_PREF, "Not Available");
+                                final String code_membre = sharedPreferences.getString(KEY_MEMBER_CODE, "Not Available");
 
                                 if (obj.getString("phone").equals(phone)) {
 
                                 } else {
                                     db.addUsers(obj.getString("firstname"), obj.getString("lastname"), obj.getString("email"), obj.getString("phone"), obj.getString("country_code"), obj.getString("network"), obj.getString("member_code"),
-                                            obj.getString("code_parrain"), obj.getString("category"), obj.getString("balance"), obj.getString("latitude"), obj.getString("longitude"), obj.getString("mbre_reseau"), obj.getString("mbre_ss_reseau"), obj.getString("validation_code"), obj.getString("validate"));
+                                            obj.getString("code_parrain"), obj.getString("category"), obj.getString("balance"), obj.getString("latitude"), obj.getString("longitude"), obj.getString("mbre_reseau"), obj.getString("mbre_ss_reseau"), obj.getString("validation_code"), obj.getString("active"));
 
                                 }
 
 
-                                if (obj.getString("latitude") != null && obj.getString("network").equals(network) && obj.getString("category").equals("geolocated")) {
-                                    final LatLng latLng = new LatLng(Double.parseDouble(obj.getString("latitude")), Double.parseDouble(obj.getString("longitude")));
+                                if ((!obj.getString("latitude").isEmpty()) && (!obj.getString("longitude").isEmpty()) && (!obj.getString("phone").equals(phone)) && obj.getString("code_parrain").equals(code_membre)) {
 
 
                                     memberGroup members = new memberGroup();
@@ -456,12 +458,10 @@ public class MemberGroupFragment extends Fragment implements OnItemClickListener
                                     members.setBalance(obj.getString("balance"));
                                     members.setAdress(obj.getString("firstname"));
                                     members.setPhone(obj.getString("phone"));
+                                    members.setActive(obj.getString("active"));
                                     // adding movie to movies array
                                     memberGroupList.add(members);
-                                    if (obj.getString("member_code").equals(phone)) {
-                                        //Toast.makeText(getActivity().getApplicationContext(), "Email "+email, Toast.LENGTH_LONG).show();
-                                    } else {
-                                    }
+
 
                                 } else {
 
@@ -503,25 +503,18 @@ public class MemberGroupFragment extends Fragment implements OnItemClickListener
         this.memberGroupList.clear();
         ArrayList<usersModel> users = this.db.getUsersDetailsAsc();
         int usersLength = users.size();
-        String email = this.sharedPreferences.getString(KEY_EMAIL, "Not Available");
         String phone = this.sharedPreferences.getString(KEY_PHONE, "Not Available");
-        String network = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_NETWORK, "Not Available");
-        String code_parrain = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_MEMBER_CODE, "Not Available");
-        String category = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_CATEGORY, "Not Available");
-        String categorie;
-        if (category == "hyper") {
-            categorie = "super";
-        } else if (category == "super") {
-            categorie = "geolocated";
-        }
+        String code_membre = this.sharedPreferences.getString(KEY_MEMBER_CODE, "Not Available");
+
         for (int i = 0; i < usersLength; i++) {
-            usersModel u = (usersModel) users.get(i);
-            if (u.getLatitude() != null && u.getNetwork().equals(network) && u.getCode_parrain().equals(code_parrain)) {
+            usersModel u = users.get(i);
+            if ((!u.getLatitude().isEmpty()) && (!u.getLongitude().isEmpty()) && (!u.getPhone().equals(phone)) && u.getCode_parrain().equals(code_membre)) {
                 memberGroup members = new memberGroup();
                 members.setName(String.valueOf(Html.fromHtml(u.getLastname())));
                 members.setBalance(u.getBalance());
                 members.setAdress(u.getName());
                 members.setPhone(u.getPhone());
+
                 this.memberGroupList.add(members);
             }
         }
@@ -535,25 +528,19 @@ public class MemberGroupFragment extends Fragment implements OnItemClickListener
         this.memberGroupList.clear();
         ArrayList<usersModel> users = this.db.getUsersDetailsDsc();
         int usersLength = users.size();
-        String email = this.sharedPreferences.getString(KEY_EMAIL, "Not Available");
         String phone = this.sharedPreferences.getString(KEY_PHONE, "Not Available");
-        String network = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_NETWORK, "Not Available");
-        String code_parrain = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_MEMBER_CODE, "Not Available");
-        String category = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_CATEGORY, "Not Available");
-        String categorie;
-        if (category == "hyper") {
-            categorie = "super";
-        } else if (category == "super") {
-            categorie = "geolocated";
-        }
+        String code_membre = this.sharedPreferences.getString(KEY_MEMBER_CODE, "Not Available");
+        String category = this.sharedPreferences.getString(KEY_CATEGORY, "Not Available");
+
         for (int i = 0; i < usersLength; i++) {
-            usersModel u = (usersModel) users.get(i);
-            if (u.getLatitude() != null && u.getNetwork().equals(network) && u.getCode_parrain().equals(code_parrain)) {
+            usersModel u = users.get(i);
+            if ((!u.getLatitude().isEmpty()) && (!u.getLongitude().isEmpty()) && (!u.getPhone().equals(phone)) && u.getCode_parrain().equals(code_membre)) {
                 memberGroup members = new memberGroup();
                 members.setName(String.valueOf(Html.fromHtml(u.getLastname())));
                 members.setBalance(u.getBalance());
                 members.setAdress(u.getName());
                 members.setPhone(u.getPhone());
+
                 this.memberGroupList.add(members);
             }
         }
@@ -568,23 +555,24 @@ public class MemberGroupFragment extends Fragment implements OnItemClickListener
         int usersLength = users.size();
         String email = this.sharedPreferences.getString(KEY_EMAIL, "Not Available");
         String phone = this.sharedPreferences.getString(KEY_PHONE, "Not Available");
-        String network = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_NETWORK, "Not Available");
-        String code_membre = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_MEMBER_CODE, "Not Available");
-        String category = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_CATEGORY, "Not Available");
+        String network = this.sharedPreferences.getString(KEY_NETWORK, "Not Available");
+        String code_membre = this.sharedPreferences.getString(KEY_MEMBER_CODE, "Not Available");
+        String category = this.sharedPreferences.getString(KEY_CATEGORY, "Not Available");
         String categorie;
-        if (category == "hyper") {
+        if (category.equals("hyper") ) {
             categorie = "super";
-        } else if (category == "super") {
+        } else if (category.equals("super")) {
             categorie = "geolocated";
         }
         for (int i = 0; i < usersLength; i++) {
-            usersModel u = (usersModel) users.get(i);
-            if (u.getLatitude() != null && u.getNetwork().equals(network) && u.getCode_parrain().equals(code_membre)) {
+            usersModel u = users.get(i);
+            if ((!u.getLatitude().isEmpty()) && (!u.getLongitude().isEmpty()) && (!u.getPhone().equals(phone)) && u.getCode_parrain().equals(code_membre)) {
                 memberGroup members = new memberGroup();
                 members.setName(String.valueOf(Html.fromHtml(u.getLastname())));
                 members.setBalance(u.getBalance());
                 members.setAdress(u.getName());
                 members.setPhone(u.getPhone());
+
                 this.memberGroupList.add(members);
             }
         }
@@ -604,5 +592,11 @@ public class MemberGroupFragment extends Fragment implements OnItemClickListener
             this.pDialog.dismiss();
             this.pDialog = null;
         }
+    }
+
+    public void onResume() {
+
+        super.onResume();
+
     }
 }

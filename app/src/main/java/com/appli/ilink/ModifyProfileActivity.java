@@ -13,7 +13,7 @@ public class ModifyProfileActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_modify_profile);
+        setContentView(R.layout.activity_modify_profile);
         this.nomLabel = (TextView) findViewById(R.id.lastnameModifyAccountView);
         this.prenomLabel = (TextView) findViewById(R.id.firstnameModifyAccountView);
         this.phoneLabel = (TextView) findViewById(R.id.phoneModifyAccountView);

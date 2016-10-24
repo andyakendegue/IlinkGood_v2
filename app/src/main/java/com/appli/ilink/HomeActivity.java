@@ -50,7 +50,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_home);
+        setContentView(R.layout.activity_home);
         String email = getSharedPreferences(Config.SHARED_PREF_NAME, 0).getString(KEY_EMAIL, "Not Available");
         View header = LayoutInflater.from(this).inflate(R.layout.nav_header_home, null);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,12 +88,13 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
         return true;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
+    /*public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+    */
 
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -174,7 +175,7 @@ public class HomeActivity extends AppCompatActivity implements OnNavigationItemS
 
 
 
-        String url = "http://ilink-app.com/app/select/users.php";
+        String url = "https://ilink-app.com/app/select/users.php";
 
         final SharedPreferences sharedPreferences = this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String email = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");

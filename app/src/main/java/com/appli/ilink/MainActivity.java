@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.fragment_accueil);
+        setContentView(R.layout.fragment_accueil);
         getSupportActionBar().hide();
         this.btnHome1 = (Button) findViewById(R.id.btnHome1);
         this.btnHome2 = (Button) findViewById(R.id.btnHome2);

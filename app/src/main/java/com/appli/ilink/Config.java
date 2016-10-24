@@ -18,10 +18,10 @@ public class Config {
     public static final String LATITUDE_SHARED_PREF = "latitude";
     public static final String LOGGEDIN_SHARED_PREF = "loggedin";
     public static final String LOGIN_SUCCESS = "success";
-    public static final String LOGIN_URL = "http://ilink-app.com/app/index.php";
+    public static final String LOGIN_URL = "https://ilink-app.com/app/";
     public static final String LONGITUDE_SHARED_PREF = "longitude";
-    public static final String MBRE_RESEAU_SHARED_PREF = "member_code";
-    public static final String MBRE_SS_RESEAU_SHARED_PREF = "member_code";
+    public static final String MBRE_RESEAU_SHARED_PREF = "mbre_reseau";
+    public static final String MBRE_SS_RESEAU_SHARED_PREF = "mbre_ss_reseau";
     public static final String MEMBER_CODE_SHARED_PREF = "member_code";
     public static final String NETWORK_SHARED_PREF = "network";
     public static final String OTP_DELIMITER = ":";
@@ -32,5 +32,5 @@ public class Config {
     public static final String URL_REQUEST_SMS = "http://192.168.0.101:8888/android_sms/msg91/request_sms.php";
     public static final String URL_VERIFY_OTP = "http://192.168.0.101:8888/android_sms/msg91/verify_otp.php";
     public static final String VALIDATION_CODE_SHARED_PREF = "validation_code";
-    public static final String VALIDATION_SHARED_PREF = "validate";
+    public static final String VALIDATION_SHARED_PREF = "active";
 }

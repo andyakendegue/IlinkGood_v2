@@ -17,11 +17,12 @@
             android:textStyle="bold"
             android:textColor="#fff"
             android:layout_gravity="center"
-            android:id="@+id/textView14"
+            android:id="@+id/textViewMember"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Classez vos membres"
-            android:layout_centerVertical="true" />
+            android:text="@string/classez_vos_membres"
+            android:layout_centerVertical="true"
+            tools:ignore="RelativeOverlap" />
         <ImageButton
             android:layout_gravity="right"
             android:id="@+id/imgBtnUp"
@@ -29,7 +30,9 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/ic_up"
-            android:layout_toLeftOf="@+id/imgBtnDown" />
+            android:layout_toLeftOf="@+id/imgBtnDown"
+            tools:ignore="ContentDescription,RtlHardcoded"
+            android:contentDescription="" />
         <ImageButton
             android:layout_gravity="right"
             android:id="@+id/imgBtnDown"
@@ -37,12 +40,14 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/ic_down"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            tools:ignore="ContentDescription,RtlHardcoded" />
     </RelativeLayout>
     <android.support.v4.widget.SwipeRefreshLayout
     android:id="@+id/swipeRefreshLayoutMemberGroup"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayoutMembers">
         <ListView android:id="@+id/listMemberGroupAll"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

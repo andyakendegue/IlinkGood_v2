@@ -40,16 +40,16 @@ public class ProfileActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_profile);
+        setContentView(R.layout.activity_profile);
         this.textView = (TextView) findViewById(R.id.textView);
         this.textView.setText("Current User: " + getSharedPreferences(Config.SHARED_PREF_NAME, 0).getString(TamponGeolocatedActivity.KEY_EMAIL, "Not Available"));
     }
 
     private void logout() {
         Builder alertDialogBuilder = new Builder(this);
-        alertDialogBuilder.setMessage((CharSequence) "Are you sure you want to logout?");
-        alertDialogBuilder.setPositiveButton((CharSequence) "Yes", new C15561());
-        alertDialogBuilder.setNegativeButton((CharSequence) "No", new C15572());
+        alertDialogBuilder.setMessage("Are you sure you want to logout?");
+        alertDialogBuilder.setPositiveButton("Yes", new C15561());
+        alertDialogBuilder.setNegativeButton("No", new C15572());
         alertDialogBuilder.create().show();
     }
 

@@ -25,7 +25,7 @@ public class LruBitmapCache extends LruCache<String, Bitmap> implements ImageCac
     }
 
     public Bitmap getBitmap(String url) {
-        return (Bitmap) get(url);
+        return get(url);
     }
 
     public void putBitmap(String url, Bitmap bitmap) {

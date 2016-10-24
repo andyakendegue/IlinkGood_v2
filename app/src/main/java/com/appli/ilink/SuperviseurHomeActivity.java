@@ -62,11 +62,11 @@ public class SuperviseurHomeActivity extends AppCompatActivity implements OnNavi
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_superviseur_home);
+        setContentView(R.layout.activity_superviseur_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (toolbar != null) {
-            toolbar.setTitle((CharSequence) "Ilink");
+            toolbar.setTitle("Ilink");
         }
         this.fab = (FloatingActionButton) findViewById(R.id.fab);
         this.fab.setVisibility(View.INVISIBLE);
@@ -144,9 +144,9 @@ public class SuperviseurHomeActivity extends AppCompatActivity implements OnNavi
 
     private void logout() {
         Builder alertDialogBuilder = new Builder(this);
-        alertDialogBuilder.setMessage((CharSequence) "Etes vous sur de vouloir vous deconnecter?");
-        alertDialogBuilder.setPositiveButton((CharSequence) "Oui", new C15782());
-        alertDialogBuilder.setNegativeButton((CharSequence) "Non", new C15793());
+        alertDialogBuilder.setMessage("Etes vous sur de vouloir vous deconnecter?");
+        alertDialogBuilder.setPositiveButton("Oui", new C15782());
+        alertDialogBuilder.setNegativeButton("Non", new C15793());
         alertDialogBuilder.create().show();
     }
 }

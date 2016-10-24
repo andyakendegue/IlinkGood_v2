@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clRegister"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.appli.ilink.RegisterActivity">
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/scrollView"
-    tools:context=".RegisterActivity">
+    >
     <LinearLayout 
         android:orientation="vertical"
         android:paddingLeft="16dp"
@@ -21,9 +27,13 @@
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="email" />
         <EditText android:id="@+id/editTextEmail" android:layout_width="match_parent" android:layout_height="wrap_content" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Numéro de Téléphone" />
-        <EditText android:id="@+id/editTextPhone" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <EditText android:id="@+id/editTextPhone" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:inputType="phone" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:layout_marginBottom="5dp" android:text="Code Pays" />
-        <TextView android:id="@+id/CountryCode" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <TextView android:id="@+id/CountryCode" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:textStyle="normal|bold"
+            android:textSize="24sp"
+            android:text="Pays"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:layout_marginBottom="5dp" android:text="Réseau" />
         <Spinner android:id="@+id/Network" android:layout_width="match_parent" android:layout_height="wrap_content" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Code Membre" />
@@ -32,7 +42,7 @@
         <EditText android:id="@+id/editTextPassword" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textPassword" />
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Repeat Password" />
         <EditText android:id="@+id/editTextPasswordRepeat" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textPassword" />
-        <fragment android:name="com.google.android.gms.maps.SupportMapFragment" android:id="@+id/mapRegister" android:layout_width="match_parent" android:layout_height="200dp" android:layout_alignParentTop="true" />
+        <fragment android:name="com.google.android.gms.maps.SupportMapFragment" android:id="@+id/mapRegisterGeo" android:layout_width="match_parent" android:layout_height="200dp" android:layout_alignParentTop="true" />
         <LinearLayout android:orientation="horizontal" android:id="@+id/layoutLocated" android:padding="16dp" android:layout_width="match_parent" android:layout_height="match_parent">
             <TextView android:textSize="20sp" android:textStyle="bold" android:id="@+id/textLocated" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="20dp" android:text="@string/text_located" />
             <ImageView android:id="@+id/imageLocated" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/gps_not_located" />
@@ -42,3 +52,4 @@
         <Button android:id="@+id/buttonRegister" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Inscription" />
     </LinearLayout>
 </ScrollView>
+</android.support.design.widget.CoordinatorLayout>

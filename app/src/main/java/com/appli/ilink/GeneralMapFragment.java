@@ -92,7 +92,7 @@ public class GeneralMapFragment extends Fragment implements OnMapReadyCallback, 
     private static final String KEY_PHONE = "phone";
     private static final String KEY_PHOTO = "photo";
     public static final String KEY_TAG = "tag";
-    private static final String KEY_VALIDATE = "active";
+    private static final String KEY_ACTIVE = "active";
     private static final String KEY_VALIDATION_CODE = "validation_code";
     private static final String LOG_TAG = "MyActivity";
     private static final long MINIMUM_DISTANCECHANGE_FOR_UPDATE = 1;
@@ -103,7 +103,7 @@ public class GeneralMapFragment extends Fragment implements OnMapReadyCallback, 
     private static final long POINT_RADIUS = 1000;
     private static final long PROX_ALERT_EXPIRATION = -1;
     private static final String PROX_ALERT_INTENT = "com.nkala.ProximityAlert";
-    private static final String REGISTER_URL = "http://ilink-app.com/app/";
+    private static final String REGISTER_URL = "https://ilink-app.com/app/";
     static String laTitude;
     static String lonGitude;
     private static final NumberFormat nf = new DecimalFormat("##.########");
@@ -662,13 +662,13 @@ public class GeneralMapFragment extends Fragment implements OnMapReadyCallback, 
 
         pDialog = new MaterialDialog.Builder(getActivity())
                 .title("Attendez svp!")
-                .content("Chargement marqueurs...")
+                .content("Chargement des marqueurs...")
                 .progress(true, 0)
                 .cancelable(false)
                 .show();
 
 
-        String url = "http://ilink-app.com/app/select/locations.php";
+        String url = "https://ilink-app.com/app/select/locations.php";
         // Creating volley request obj
         JsonArrayRequest movieReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -1018,7 +1018,7 @@ public class GeneralMapFragment extends Fragment implements OnMapReadyCallback, 
 
             pDialog = new MaterialDialog.Builder(getActivity())
                     .title("Attendez svp!")
-                    .content("Chargement marqueurs...")
+                    .content("Chargement des marqueurs...")
                     .progress(true, 0)
                     .cancelable(false)
                     .show();
@@ -1066,14 +1066,14 @@ public class GeneralMapFragment extends Fragment implements OnMapReadyCallback, 
 
         pDialog = new MaterialDialog.Builder(getActivity())
                 .title("Attendez svp!")
-                .content("Chargement marqueurs...")
+                .content("Chargement des marqueurs...")
                 .progress(true, 0)
                 .cancelable(false)
                 .show();
 
 
-        //String url = "http://ilink-app.com/app/select/locations.php";
-        String url = "http://ilink-app.com/app/select/locations.php";
+        //String url = "https://ilink-app.com/app/select/locations.php";
+        String url = "https://ilink-app.com/app/select/locations.php";
         // Creating volley request obj
         JsonArrayRequest movieReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -1210,14 +1210,14 @@ public class GeneralMapFragment extends Fragment implements OnMapReadyCallback, 
 
         pDialog = new MaterialDialog.Builder(getActivity())
                 .title("Attendez svp!")
-                .content("Nous cherchons votre chemin...")
+                .content("Chargement des marqueurs...")
                 .progress(true, 0)
                 .cancelable(false)
                 .show();
 
 
-        //String url = "http://ilink-app.com/app/select/locations.php";
-        String url = "http://ilink-app.com/app/select/locations.php";
+        //String url = "https://ilink-app.com/app/select/locations.php";
+        String url = "https://ilink-app.com/app/select/locations.php";
         // Creating volley request obj
         JsonArrayRequest movieReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {

@@ -15,14 +15,15 @@
         android:id="@+id/textValidation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Saisissez le code de validation reçu"
+        android:text="@string/saisissez_le_code_de_validation_re_u"
         android:layout_alignParentTop="true" />
     <EditText
         android:id="@+id/editTextValidation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/textValidation" />
+        android:layout_below="@+id/textValidation"
+        android:inputType="text" />
     <TextView
         android:textSize="20sp"
         android:textStyle="bold"
@@ -30,9 +31,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Combien de superviseurs dans votre réseau?"
+        android:text="@string/combien_de_superviseurs_dans_votre_r_seau"
         android:layout_below="@+id/editTextValidation"
-        android:inputType="number" />
+        android:inputType="number"
+        tools:ignore="TextViewEdits" />
     <EditText
         android:id="@+id/editTextNombreMembres"
         android:layout_width="match_parent"
@@ -47,22 +49,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Combien de membres Geolocalise par superviseurs?"
+        android:text="@string/combien_de_membres_geolocalise_par_superviseurs"
         android:layout_below="@+id/editTextNombreMembres" />
     <EditText
         android:id="@+id/editTextNombreGeo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/textNombreGeo" />
+        android:layout_below="@+id/textNombreGeo"
+        android:inputType="number"/>
     <Button
         android:textColor="#fff"
-        android:id="@+id/btnValidate"
+        android:id="@+id/btnactive"
         android:background="@drawable/first_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Valider"
+        android:text="@string/valider"
         android:layout_below="@+id/editTextNombreGeo"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

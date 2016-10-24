@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -30,11 +31,17 @@ import java.util.Map;
 public class ActivateActivity extends AppCompatActivity {
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PHONE = "phone";
-    public static final String KEY_VALIDATE = "validate";
+    public static final String KEY_ACTIVE = "active";
     public static final String KEY_TAG = "tag";
     EditText editTextValidation;
     String validation;
-    Button btnValidate;
+    Button btnactive;
+
+    EditText editTextNombreGeo;
+    EditText editTextNombreMembres;
+
+    TextView textNombreGeo;
+    TextView textNombreMembres;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +50,23 @@ public class ActivateActivity extends AppCompatActivity {
         actionBar.hide();
         setContentView(R.layout.activity_activate);
         editTextValidation = (EditText) findViewById(R.id.editTextValidation);
-        btnValidate = (Button) findViewById(R.id.btnValidate);
 
-        btnValidate.setOnClickListener(new View.OnClickListener() {
+        this.editTextValidation = (EditText) findViewById(R.id.editTextValidation);
+        this.editTextNombreMembres = (EditText) findViewById(R.id.editTextNombreMembres);
+        this.editTextNombreGeo = (EditText) findViewById(R.id.editTextNombreGeo);
+        this.textNombreGeo = (TextView) findViewById(R.id.textNombreGeo);
+        this.textNombreMembres = (TextView) findViewById(R.id.textNombreMembres);
+        this.textNombreMembres.setVisibility(View.INVISIBLE);
+        this.textNombreMembres.setHeight(0);
+        this.editTextNombreMembres.setVisibility(View.INVISIBLE);
+        this.editTextNombreMembres.setHeight(0);
+        this.textNombreGeo.setVisibility(View.INVISIBLE);
+        this.textNombreGeo.setHeight(0);
+        this.editTextNombreGeo.setVisibility(View.INVISIBLE);
+        this.editTextNombreGeo.setHeight(0);
+        btnactive = (Button) findViewById(R.id.btnactive);
+
+        btnactive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final SharedPreferences sharedPreferences = ActivateActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -65,7 +86,7 @@ public class ActivateActivity extends AppCompatActivity {
                     editor.commit();
 
                     try {
-                        validateUser();
+                        activeUser();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -83,13 +104,13 @@ public class ActivateActivity extends AppCompatActivity {
 
 
 
-    public void validateUser ()throws JSONException{
+    public void activeUser ()throws JSONException{
 
         String tag_json_arry = "json_array_req";
 
 
 
-        String url = "http://ilink-app.com/app/select/validation_simple.php";
+        String url = "https://ilink-app.com/app/select/validation_simple.php";
 
         final SharedPreferences sharedPreferences = this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String phone = sharedPreferences.getString(Config.PHONE_SHARED_PREF, "Not Available");
@@ -152,7 +173,7 @@ public class ActivateActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put(KEY_PHONE, phone);
-                params.put(KEY_VALIDATE, "oui");
+                params.put(KEY_ACTIVE, "oui");
                 return params;
             }
 

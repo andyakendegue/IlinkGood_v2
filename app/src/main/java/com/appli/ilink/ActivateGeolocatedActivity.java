@@ -35,8 +35,8 @@ public class ActivateGeolocatedActivity extends AppCompatActivity {
     public static final String KEY_NOMBRE_CODES_SUPERVISEUR = "nbre_code_superviseur";
     public static final String KEY_PHONE = "phone";
     public static final String KEY_TAG = "tag";
-    public static final String KEY_VALIDATE = "validate";
-    Button btnValidate;
+    public static final String KEY_ACTIVE = "active";
+    Button btnactive;
     public String category;
     String code_membre;
     EditText editTextNombreGeo;
@@ -53,11 +53,11 @@ public class ActivateGeolocatedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView((int) R.layout.activity_activate);
+        setContentView(R.layout.activity_activate);
         final SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, 0);
         final String validation_code = sharedPreferences.getString(Config.VALIDATION_CODE_SHARED_PREF, "Not Available");
-        this.category = sharedPreferences.getString(RegisterSimpleActivity.KEY_CATEGORY, "Not Available");
-        this.code_membre = sharedPreferences.getString(RegisterSimpleActivity.KEY_MEMBER_CODE, "Not Available");
+        this.category = sharedPreferences.getString(Config.CATEGORY_SHARED_PREF, "Not Available");
+        this.code_membre = sharedPreferences.getString(Config.MEMBER_CODE_SHARED_PREF, "Not Available");
         this.editTextValidation = (EditText) findViewById(R.id.editTextValidation);
         this.editTextNombreMembres = (EditText) findViewById(R.id.editTextNombreMembres);
         this.editTextNombreGeo = (EditText) findViewById(R.id.editTextNombreGeo);
@@ -78,20 +78,20 @@ public class ActivateGeolocatedActivity extends AppCompatActivity {
             this.textNombreGeo.setVisibility(View.VISIBLE);
             this.editTextNombreGeo.setVisibility(View.VISIBLE);
         }
-        this.btnValidate = (Button) findViewById(R.id.btnValidate);
-        btnValidate.setOnClickListener(new View.OnClickListener() {
+        this.btnactive = (Button) findViewById(R.id.btnactive);
+        btnactive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 validation = editTextValidation.getText().toString();
                 if (validation_code.equalsIgnoreCase(validation)) {
 
-                    if (category.equalsIgnoreCase("geolocated")) {
-                        nbre_codes = "0";
-                        nbre_codes_geo = "0";
+                    if (category.equalsIgnoreCase("geolocated")|| category.equalsIgnoreCase("super")) {
+                        nbre_codes = sharedPreferences.getString(Config.MBRE_RESEAU_SHARED_PREF, "Not Available");;
+                        nbre_codes_geo = sharedPreferences.getString(Config.MBRE_SS_RESEAU_SHARED_PREF, "Not Available");;
                     } else {
-                        nbre_codes = editTextNombreMembres.getText().toString();
-                        nbre_codes_geo = editTextNombreGeo.getText().toString();
+                        nbre_codes = editTextNombreMembres.getText().toString().trim();
+                        nbre_codes_geo = editTextNombreGeo.getText().toString().trim();
                     }
                     //Creating editor to store values to shared preferences
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -105,7 +105,7 @@ public class ActivateGeolocatedActivity extends AppCompatActivity {
                     editor.commit();
 
                     try {
-                        validateUser();
+                        activeUser();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -121,12 +121,12 @@ public class ActivateGeolocatedActivity extends AppCompatActivity {
 
     }
 
-    public void validateUser ()throws JSONException {
+    public void activeUser ()throws JSONException {
 
         String tag_json_arry = "json_array_req";
 
 
-        String url = "http://ilink-app.com/app/select/validation.php";
+        String url = "https://ilink-app.com/app/select/validation.php";
 
         final SharedPreferences sharedPreferences = this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String phone = sharedPreferences.getString(Config.PHONE_SHARED_PREF, "Not Available");
@@ -190,11 +190,11 @@ public class ActivateGeolocatedActivity extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap();
                 params.put(ActivateGeolocatedActivity.KEY_PHONE, phone);
-                params.put(ActivateGeolocatedActivity.KEY_NOMBRE_CODES, ActivateGeolocatedActivity.this.nbre_codes);
-                params.put(ActivateGeolocatedActivity.KEY_NOMBRE_CODES_SUPERVISEUR, ActivateGeolocatedActivity.this.nbre_codes_geo);
-                params.put(ActivateGeolocatedActivity.KEY_CATEGORY, ActivateGeolocatedActivity.this.category);
-                params.put(ActivateGeolocatedActivity.KEY_MEMBER_CODE, ActivateGeolocatedActivity.this.code_membre);
-                params.put(ActivateGeolocatedActivity.KEY_VALIDATE, "oui");
+                params.put(ActivateGeolocatedActivity.KEY_NOMBRE_CODES, nbre_codes);
+                params.put(ActivateGeolocatedActivity.KEY_NOMBRE_CODES_SUPERVISEUR, nbre_codes_geo);
+                params.put(ActivateGeolocatedActivity.KEY_CATEGORY, category);
+                params.put(ActivateGeolocatedActivity.KEY_MEMBER_CODE, code_membre);
+                params.put(ActivateGeolocatedActivity.KEY_ACTIVE, "oui");
                 return params;
             }
 

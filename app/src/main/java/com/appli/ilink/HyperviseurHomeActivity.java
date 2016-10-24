@@ -30,10 +30,10 @@ public class HyperviseurHomeActivity extends AppCompatActivity implements OnNavi
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_hyperviseur_home);
+        setContentView(R.layout.activity_hyperviseur_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle((CharSequence) "Ilink");
+        toolbar.setTitle("Ilink");
         this.fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.INVISIBLE);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -77,6 +77,19 @@ public class HyperviseurHomeActivity extends AppCompatActivity implements OnNavi
                     }
                 });
                 break;
+            case R.id.group_ask_superviseur:
+                fragment = new MemberAskGroupFragment();
+                //fragment = new GroupFragment();
+                fab.setVisibility(View.VISIBLE);
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent membre = new Intent(getApplicationContext(), AddSuperviseurActivity.class);
+                        startActivity(membre);
+                    }
+                });
+                break;
+
 
             case R.id.group_ask_credit:
                 fragment = new DemandesCreditFragment();

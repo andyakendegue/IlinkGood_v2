@@ -55,6 +55,7 @@ public class memberGroupAdapter extends BaseAdapter {
         TextView amount = (TextView) convertView.findViewById(R.id.textMemberGroupAmount);
         TextView adress = (TextView) convertView.findViewById(R.id.textMemberGroupAdress);
         TextView phone = (TextView) convertView.findViewById(R.id.textMemberGroupPhone);
+        TextView active = (TextView) convertView.findViewById(R.id.textMemberGroupActive);
 
         memberGroup m = memberGroupItems.get(position);
 
@@ -62,6 +63,7 @@ public class memberGroupAdapter extends BaseAdapter {
         amount.setText(m.getBalance());
         adress.setText(m.getAdress());
         phone.setText(m.getPhone());
+        active.setText(m.getActive());
 
 
         return convertView;

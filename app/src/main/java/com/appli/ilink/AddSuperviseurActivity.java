@@ -1,6 +1,5 @@
 package com.appli.ilink;
 
-import android.*;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
@@ -48,23 +47,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
@@ -84,19 +68,19 @@ import java.util.Map;
 
 public class AddSuperviseurActivity extends AppCompatActivity implements OnClickListener, LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     public static final String KEY_CATEGORY = "category";
-    public static final String KEY_COUNTRY = "country";
+    public static final String KEY_COUNTRY = "country_code";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_FIRSTNAME = "firstname";
     public static final String KEY_LASTNAME = "lastname";
     public static final String KEY_LATITUDE = "latitude";
     public static final String KEY_LONGITUDE = "longitude";
-    public static final String KEY_MEMBER_CODE = "member";
+    public static final String KEY_MEMBER_CODE = "member_code";
     public static final String KEY_NETWORK = "network";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_PHONE = "phone";
     public static final String KEY_TAG = "tag";
-    public static final String KEY_VALIDATE = "validate";
-    private static final String REGISTER_URL = "http://ilink-app.com/app/";
+    public static final String KEY_ACTIVE = "active";
+    private static final String REGISTER_URL = "https://ilink-app.com/app/";
     private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private TextView ListPays;
     private TextView titleLayout;
@@ -155,7 +139,7 @@ public class AddSuperviseurActivity extends AppCompatActivity implements OnClick
             Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
         }
         final SharedPreferences sharedPreferences = this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String member_code = sharedPreferences.getString(Config.MEMBER_CODE_SHARED_PREF, "Not Available");;
+        String member_code = sharedPreferences.getString(Config.MEMBER_CODE_SHARED_PREF, "Not Available");
         this.listReseau = new ArrayList<String>();
         this.firstname = (EditText) findViewById(R.id.firstname);
         this.lastname = (EditText) findViewById(R.id.lastname);
@@ -217,8 +201,8 @@ public class AddSuperviseurActivity extends AppCompatActivity implements OnClick
 
 
 
-        //String url = "http://ilink-app.com/app/select/locations.php";
-        String url = "http://ilink-app.com/app/select/network.php";
+        //String url = "https://ilink-app.com/app/select/locations.php";
+        String url = "https://ilink-app.com/app/select/network.php";
         Map<String, String> params = new HashMap<String, String>();
 
         params.put(KEY_COUNTRY, pays);
@@ -601,7 +585,7 @@ public class AddSuperviseurActivity extends AppCompatActivity implements OnClick
                                 params.put(AddSuperviseurActivity.KEY_LONGITUDE, longitude);
                                 params.put(AddSuperviseurActivity.KEY_COUNTRY, e_pays);
                                 params.put(AddSuperviseurActivity.KEY_CATEGORY, "geolocated");
-                                params.put(AddSuperviseurActivity.KEY_VALIDATE, "non");
+                                params.put(AddSuperviseurActivity.KEY_ACTIVE, "non");
                                 params.put(AddSuperviseurActivity.KEY_TAG, "register_geolocated");
                                 return params;
                             }
@@ -788,7 +772,7 @@ public class AddSuperviseurActivity extends AppCompatActivity implements OnClick
             return;
         } else {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
-                    mLocationRequest, (com.google.android.gms.location.LocationListener) this);
+                    mLocationRequest, this);
         }
 
     }

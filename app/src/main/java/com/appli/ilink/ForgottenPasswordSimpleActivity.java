@@ -26,7 +26,7 @@ public class ForgottenPasswordSimpleActivity extends AppCompatActivity {
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_PHONE = "phone";
     public static final String KEY_TAG = "tag";
-    private static final String REGISTER_URL = "http://ilink-app.com/app/";
+    private static final String REGISTER_URL = "https://ilink-app.com/app/";
     private Button btnModifyPassword;
     private EditText editTextPassword1;
     private EditText editTextPassword2;
@@ -36,7 +36,7 @@ public class ForgottenPasswordSimpleActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_forgotten_password_simple);
+        setContentView(R.layout.activity_forgotten_password_simple);
         this.btnModifyPassword = (Button) findViewById(R.id.btnModifyPassword);
         this.editTextPassword2 = (EditText) findViewById(R.id.editTextPassword2);
         this.editTextPassword1 = (EditText) findViewById(R.id.editTextPassword1);

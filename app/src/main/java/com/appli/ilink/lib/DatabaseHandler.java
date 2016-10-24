@@ -43,7 +43,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_LATITUDE = "latitude";
     private static final String KEY_LONGITUDE = "longitude";
     private static final String KEY_VALIDATION_CODE = "validation_code";
-    private static final String KEY_VALIDATE = "validate";
+    private static final String KEY_ACTIVE = "active";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_PHOTO = "photo";
     private static final String KEY_GENRE = "genre";
@@ -91,7 +91,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_MBRE_RESEAU + " TEXT,"
                 + KEY_MBRE_SS_RESEAU + " TEXT,"
                 + KEY_VALIDATION_CODE + " TEXT,"
-                + KEY_VALIDATE + " TEXT" + ")";
+                + KEY_ACTIVE + " TEXT" + ")";
 
         db.execSQL(CREATE_USERS_TABLE);
 
@@ -132,7 +132,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * Storing users in database
      * */
     public void addUsers(String firstname, String lastname, String email, String phone, String country_code, String network, String member_code,String code_parrain,
-                         String category, String balance, String latitude, String longitude, String mbre_reseau, String mbre_ss_reseau, String validation_code, String validate) {
+                         String category, String balance, String latitude, String longitude, String mbre_reseau, String mbre_ss_reseau, String validation_code, String active) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -152,7 +152,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_MBRE_RESEAU, mbre_reseau);
         values.put(KEY_MBRE_SS_RESEAU, mbre_ss_reseau);
         values.put(KEY_VALIDATION_CODE, validation_code);
-        values.put(KEY_VALIDATE, validate);
+        values.put(KEY_ACTIVE, active);
 
         // Inserting Row
         db.insert(TABLE_SIMPLE_USERS, null, values);

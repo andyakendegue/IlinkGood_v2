@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clLoginSimple"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+<ScrollView
     android:background="@drawable/side_nav_bar"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -59,7 +66,7 @@
                 android:textColorHint="#fff" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.v7.widget.AppCompatButton
+        <Button
             android:id="@+id/buttonLogin"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -81,7 +88,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp" />
 
-        <android.support.v7.widget.AppCompatButton
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Changer son mot de passe"
@@ -103,7 +110,7 @@
             android:textColor="#fff"
             android:layout_marginTop="10dp" />
 
-        <android.support.v7.widget.AppCompatButton
+        <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/second_button"
@@ -116,3 +123,4 @@
 
     </LinearLayout>
 </ScrollView>
+    </android.support.design.widget.CoordinatorLayout>

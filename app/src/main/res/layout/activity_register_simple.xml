@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clRegisterSimple"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterSimpleActivity">
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/scrollView"
-    tools:context=".RegisterSimpleActivity">
+    android:id="@+id/scrollView">
     <LinearLayout
         android:orientation="vertical"
         android:paddingLeft="16dp"
@@ -20,11 +25,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="Inscrivez-Vous" />
+            android:text="@string/inscrivez_vous" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nom" />
+            android:text="@string/nom" />
         <EditText
             android:id="@+id/lastname"
             android:layout_width="match_parent"
@@ -32,7 +37,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Adresse" />
+            android:text="@string/adresse" />
         <EditText
             android:id="@+id/firstname"
             android:layout_width="match_parent"
@@ -40,7 +45,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="email" />
+            android:text="@string/email" />
         <EditText
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
@@ -48,7 +53,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Password" />
+            android:text="@string/num_ro_de_t_l_phone" />
+        <EditText
+            android:id="@+id/editTextPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/password" />
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
@@ -57,36 +71,31 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Repeat Password" />
+            android:text="@string/repeat_password" />
         <EditText
             android:id="@+id/editTextPasswordRepeat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Numéro de Téléphone" />
-        <EditText
-            android:id="@+id/editTextPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:text="Code Pays" />
-        <Spinner
+            android:text="@string/code_pays" />
+        <TextView
             android:id="@+id/CountryCode"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textStyle="normal|bold"
+            android:textSize="24sp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:text="Réseau" />
+            android:text="@string/r_seau" />
         <Spinner
             android:id="@+id/Network"
             android:layout_width="match_parent"
@@ -95,6 +104,14 @@
             android:id="@+id/buttonRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Inscription" />
+            android:text="@string/inscription"
+            android:background="@drawable/first_button"
+            android:textStyle="normal|bold"
+            android:textColor="#ffffff"
+            android:layout_marginTop="20dp" />
+
+
+
     </LinearLayout>
 </ScrollView>
+</android.support.design.widget.CoordinatorLayout>

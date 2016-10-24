@@ -78,7 +78,7 @@ public class TamponGeolocatedActivity extends AppCompatActivity {
 
     private void user() throws JSONException {
         String tag_json_arry = "json_array_req";
-        String url = "http://ilink-app.com/app/select/users.php";
+        String url = "https://ilink-app.com/app/select/users.php";
         final SharedPreferences sharedPreferences = this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String phone = sharedPreferences.getString(Config.PHONE_SHARED_PREF, "Not Available");
         Map<String, String> params = new HashMap<String, String>();
@@ -110,6 +110,8 @@ public class TamponGeolocatedActivity extends AppCompatActivity {
                             editor.putString(Config.LATITUDE_SHARED_PREF, obj.getString("latitude"));
                             editor.putString(Config.LONGITUDE_SHARED_PREF, obj.getString("longitude"));
                             editor.putString(Config.BALANCE_SHARED_PREF, obj.getString("balance"));
+                            editor.putString(Config.MBRE_RESEAU_SHARED_PREF, obj.getString("mbre_reseau"));
+                            editor.putString(Config.MBRE_SS_RESEAU_SHARED_PREF, obj.getString("mbre_ss_reseau"));
                             editor.commit();
                             if (obj.getString("active").equalsIgnoreCase("non")) {
                                 TamponGeolocatedActivity.this.startActivity(new Intent(TamponGeolocatedActivity.this, ActivateGeolocatedActivity.class));
@@ -140,7 +142,7 @@ public class TamponGeolocatedActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        Toast.makeText(TamponGeolocatedActivity.this, "Impossible de se connecter au serveur", Toast.LENGTH_LONG).show();
+                        Toast.makeText(TamponGeolocatedActivity.this, "Impossible de se connecter au serveur :"+error.getMessage(), Toast.LENGTH_LONG).show();
                         TamponGeolocatedActivity.this.btnRetry.setVisibility(View.VISIBLE);
                     }
                 }
@@ -162,7 +164,7 @@ public class TamponGeolocatedActivity extends AppCompatActivity {
 
 
 
-        String url = "http://ilink-app.com/app/select/locations.php";
+        String url = "https://ilink-app.com/app/select/locations.php";
         // Creating volley request obj
         JsonArrayRequest movieReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -177,7 +179,7 @@ public class TamponGeolocatedActivity extends AppCompatActivity {
                                 JSONObject obj = response.getJSONObject(i);
                                 db.addUsers(obj.getString("firstname"), obj.getString("lastname"), obj.getString("email"), obj.getString("phone"), obj.getString("country_code"), obj.getString("network"), obj.getString("member_code"), obj.getString("code_parrain"), obj.getString("category"), obj.getString("balance"), obj.getString("latitude"), obj.getString("longitude"), obj.getString("mbre_reseau"), obj.getString("mbre_ss_reseau"), obj.getString("validation_code"), obj.getString("active"));
                             } catch (JSONException e) {
-                                Toast.makeText(TamponGeolocatedActivity.this, "Impossible de recuperer les marqueurs : " + e.toString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(TamponGeolocatedActivity.this, "Impossible de recuperer les utilisateurs : " + e.toString(), Toast.LENGTH_LONG).show();
                             }
                         }
 

@@ -50,7 +50,7 @@ public class AccountSimpleUserFragment extends Fragment implements LocationListe
     public static final String KEY_LATITUDE = "latitude";
     public static final String KEY_LONGITUDE = "longitude";
     public static final String KEY_TAG = "tag";
-    private static final String REGISTER_URL = "http://ilink-app.com/app/";
+    private static final String REGISTER_URL = "https://ilink-app.com/app/";
     private String TAG;
     public TextView abonnementLabel;
     public TextView emailLabel;
@@ -328,7 +328,7 @@ public class AccountSimpleUserFragment extends Fragment implements LocationListe
                 .show();
 
 
-        String url = "http://ilink-app.com/app/select/users.php";
+        String url = "https://ilink-app.com/app/select/users.php";
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String email = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");

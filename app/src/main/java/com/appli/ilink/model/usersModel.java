@@ -1,16 +1,13 @@
 package com.appli.ilink.model;
 
-/**
- * Created by capp on 19/04/16.
- */
 public class usersModel {
-    private String name,lastname, email, phone, country_code, network, member_code,code_parrain, category, balance, latitude, longitude, mbre_reseau, mbre_ss_reseau, validation_code, validate;
+    private String name,lastname, email, phone, country_code, network, member_code,code_parrain, category, balance, latitude, longitude, mbre_reseau, mbre_ss_reseau, validation_code, active;
 
     public usersModel() {
 
     }
 
-    public usersModel(String name, String lastname, String email, String phone, String country_code, String network, String member_code, String code_parrain, String category, String balance, String latitude, String longitude, String mbre_reseau, String mbre_ss_reseau, String validation_code, String validate) {
+    public usersModel(String name, String lastname, String email, String phone, String country_code, String network, String member_code, String code_parrain, String category, String balance, String latitude, String longitude, String mbre_reseau, String mbre_ss_reseau, String validation_code, String active) {
         this.name = name;
         this.lastname = lastname;
         this.email = email;
@@ -26,7 +23,7 @@ public class usersModel {
         this.mbre_reseau = mbre_reseau;
         this.mbre_ss_reseau = mbre_ss_reseau;
         this.validation_code = validation_code;
-        this.validate = validate;
+        this.active = active;
     }
 
 
@@ -139,12 +136,12 @@ public class usersModel {
         return this;
     }
 
-    public String getValidate() {
-        return validate;
+    public String getactive() {
+        return active;
     }
 
-    public usersModel setValidate(String validate) {
-        this.validate = validate;
+    public usersModel setactive(String active) {
+        this.active = active;
         return this;
     }
     public String getCode_parrain() {

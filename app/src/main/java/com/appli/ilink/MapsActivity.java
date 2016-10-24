@@ -49,6 +49,7 @@ import android.widget.ToggleButton;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.MaterialDialog.Builder;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -130,12 +131,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ImageButton imageBtnRoute;
     Double latitude;
     Double longitude;
-    private static final String REGISTER_URL = "http://ilink-app.com/app/";
+    private static final String REGISTER_URL = "https://ilink-app.com/app/";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PHONE = "phone";
     public static final String KEY_LATITUDE = "latitude";
     public static final String KEY_LONGITUDE = "longitude";
     public static final String KEY_TAG = "tag";
+    public static final String KEY_COUNTRY = "country_code";
     private LinearLayout relativeLayout;
     private FrameLayout frameLayout;
     private TextView displayDistance;
@@ -169,12 +171,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Spinner ListMontant;
     private String[] montantItem;
     private String e_montant;
+    private String[] reseauItem;
+    private List<String> listReseau ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         CheckEnableGPS();
+
         latitude = 0.0;
         longitude = 0.0;
         displayDistance = (TextView) findViewById(R.id.textDistance);
@@ -312,7 +317,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-        new CheckLocations().execute();
+        getnetworkList();
+
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         crit.setAccuracy(Criteria.ACCURACY_FINE);
@@ -655,14 +661,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         pDialog = new MaterialDialog.Builder(MapsActivity.this)
                 .title("Attendez svp!")
-                .content("Chargement marqueurs...")
+                .content("Chargement des marqueurs...")
                 .progress(true, 0)
                 .cancelable(false)
                 .show();
 
 
-        //String url = "http://ilink-app.com/app/select/locations.php";
-        String url = "http://ilink-app.com/app/select/locations.php";
+        //String url = "https://ilink-app.com/app/select/locations.php";
+        String url = "https://ilink-app.com/app/select/locations.php";
         // Creating volley request obj
         JsonArrayRequest movieReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -686,6 +692,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 if (obj.getString("latitude") != null && obj.getString("network").equals(network) && obj.getString("category").equals("geolocated") && obj.getString("active").equals("oui")) {
 
                                     final LatLng latLng = new LatLng(Double.parseDouble(obj.getString("latitude")), Double.parseDouble(obj.getString("longitude")));
+
 
 
                                     map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
@@ -779,13 +786,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         pDialog = new MaterialDialog.Builder(MapsActivity.this)
                 .title("Attendez svp!")
-                .content("Chargement marqueurs...")
+                .content("Chargement des marqueurs...")
                 .progress(true, 0)
                 .cancelable(false)
                 .show();
 
-        //String url = "http://ilink-app.com/app/select/locations.php";
-        String url = "http://ilink-app.com/app/select/locations.php";
+        //String url = "https://ilink-app.com/app/select/locations.php";
+        String url = "https://ilink-app.com/app/select/locations.php";
         // Creating volley request obj
         JsonArrayRequest movieReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -908,8 +915,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .cancelable(false)
                 .show();
 
-        //String url = "http://ilink-app.com/app/select/locations.php";
-        String url = "http://ilink-app.com/app/select/locations.php";
+        //String url = "https://ilink-app.com/app/select/locations.php";
+        String url = "https://ilink-app.com/app/select/locations.php";
         // Creating volley request obj
         JsonArrayRequest movieReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -1840,8 +1847,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void timeToDirection(String url) {
         String tag_json_arry = "json_array_req";
 
-        //String url = "http://ilink-app.com/app/select/locations.php";
-        //String url = "http://ilink-app.com/app/select/locations.php";
+        //String url = "https://ilink-app.com/app/select/locations.php";
+        //String url = "https://ilink-app.com/app/select/locations.php";
         // Creating volley request obj
         JsonObjectRequest movieReq = new JsonObjectRequest(Request.Method.GET,url,null,
                 new Response.Listener<JSONObject>() {
@@ -2019,5 +2026,153 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             dialog.show();
         }
 
+
+
     }
+
+    public void getnetworkList() {
+
+        final SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String pays = sharedPreferences.getString(Config.COUNTRY_CODE_SHARED_PREF, "Not Available");
+        /*
+
+        Recuperer la liste de reseaux
+
+         */
+
+        String tag_json_arry = "json_array_req";
+
+
+
+        pDialog = new MaterialDialog.Builder(MapsActivity.this)
+                .title("Attendez svp!")
+                .content("Recuperation de la liste des réseaux")
+                .progress(true, 0)
+                .cancelable(false)
+                .show();
+        //String url = "https://ilink-app.com/app/select/locations.php";
+        String url = "https://ilink-app.com/app/select/network.php";
+        Map<String, String> params = new HashMap<String, String>();
+
+        params.put(KEY_COUNTRY, pays);
+        params.put(KEY_TAG, "getuser");
+        // Creating volley request obj
+        CustomRequest movieReq = new CustomRequest(Request.Method.POST, url, params,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        hidePDialog();
+                        new CheckLocations().execute();
+                        Log.d(TAG, response.toString());
+
+
+                        // Parsing json
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                JSONObject obj = response.getJSONObject(i);
+
+
+                                //In onresume fetching value from sharedpreference
+
+
+
+
+                                /*Iterator<?> keys = obj.keys(); // get the keys of the jsonObject
+                                while(keys.hasNext()) {
+                                    //iterrate over them
+                                    String key = (String)keys.next();
+                                    if(obj.optString(key).trim()!=null) {
+
+                                        String data = obj.optString(key);
+
+                                        if (data.length()==0) {
+
+                                        } else {
+                                            listReseau.add(obj.optString(key));
+
+                                        }
+
+
+                                    } else {
+
+                                    }
+
+                                }
+                                */
+
+
+                                Iterator<?> iter = obj.keys();
+                                reseauItem = new String[obj.length()];
+                                for (int j = 0; j< obj.length(); j++)
+                                {
+
+                                    String key = (String) iter.next();
+
+
+
+
+
+
+                                    if(obj.optString(key).trim()!=null) {
+
+                                        String data = obj.optString(key);
+
+                                        if (data.length()==0) {
+
+                                        } else {
+
+                                            if(data.equalsIgnoreCase(pays)) {
+
+                                            } else {
+                                                listReseau.add(obj.optString(key));
+                                            }
+
+
+
+
+
+
+                                        }
+
+
+                                    } else {
+
+                                    }
+
+
+                                }
+                                //Toast.makeText(RegisterActivity.this, listReseau.toString(), Toast.LENGTH_LONG).show();
+
+
+
+
+
+                            } catch (JSONException e) {
+                                hidePDialog();
+
+                            }
+
+                        }
+
+                        // notifying list adapter about data changes
+                        // so that it renders the list view with updated data
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                hidePDialog();
+
+
+
+            }
+        });
+        // Set timeout request
+        movieReq.setRetryPolicy(new DefaultRetryPolicy(5*DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
+        movieReq.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(movieReq, tag_json_arry);
+    }
+
 }

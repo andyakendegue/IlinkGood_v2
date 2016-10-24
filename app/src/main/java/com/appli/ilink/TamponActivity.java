@@ -64,7 +64,7 @@ public class TamponActivity extends AppCompatActivity {
                 editor.putString(RegisterSimpleActivity.KEY_COUNTRY, obj.getString(RegisterSimpleActivity.KEY_COUNTRY));
                 editor.putString(RegisterSimpleActivity.KEY_NETWORK, obj.getString(RegisterSimpleActivity.KEY_NETWORK));
                 editor.putString(RegisterSimpleActivity.KEY_MEMBER_CODE, obj.getString(RegisterSimpleActivity.KEY_MEMBER_CODE));
-                editor.putString(RegisterSimpleActivity.KEY_VALIDATE, obj.getString("active"));
+                editor.putString(RegisterSimpleActivity.KEY_ACTIVE, obj.getString("active"));
                 editor.putString(Config.VALIDATION_CODE_SHARED_PREF, obj.getString(Config.VALIDATION_CODE_SHARED_PREF));
                 editor.putString(TamponActivity.KEY_LATITUDE, obj.getString(TamponActivity.KEY_LATITUDE));
                 editor.putString(TamponActivity.KEY_LONGITUDE, obj.getString(TamponActivity.KEY_LONGITUDE));
@@ -99,7 +99,7 @@ public class TamponActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView((int) R.layout.activity_tampon);
+        setContentView(R.layout.activity_tampon);
         this.btnRetry = (Button) findViewById(R.id.button_retry);
         this.btnRetry.setVisibility(View.INVISIBLE);
         this.btnRetry.setOnClickListener(new C15801());
@@ -117,6 +117,6 @@ public class TamponActivity extends AppCompatActivity {
         Map<String, String> params = new HashMap();
         params.put(KEY_PHONE, phone);
         params.put(KEY_TAG, "getuser");
-        Volley.newRequestQueue(this).add(new CustomRequest(1, "http://ilink-app.com/app/select/users_simple.php", params, new C15812(sharedPreferences), new C15823()));
+        Volley.newRequestQueue(this).add(new CustomRequest(1, "https://ilink-app.com/app/select/users_simple.php", params, new C15812(sharedPreferences), new C15823()));
     }
 }

@@ -82,7 +82,7 @@ public class GroupMapFragment extends Fragment implements LocationListener, OnMa
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String REGISTER_URL = "http://ilink-app.com/app/";
+    private static final String REGISTER_URL = "https://ilink-app.com/app/";
 
 
     public static final String KEY_EMAIL = "email";
@@ -559,7 +559,7 @@ public class GroupMapFragment extends Fragment implements LocationListener, OnMa
         pDialog.show();
 
 
-        String url = "http://ilink-app.com/app/select/locations.php";
+        String url = "https://ilink-app.com/app/select/locations.php";
         // Creating volley request obj
         JsonArrayRequest movieReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {

@@ -42,5 +42,13 @@
         android:layout_marginTop="20dp"
         android:layout_below="@+id/textMemberGroupAdress" />
 
+    <TextView
+        android:text="Active"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textMemberGroupActive"
+        android:layout_below="@+id/textMemberGroupPhone"
+        android:textSize="18sp" />
+
 
 </RelativeLayout>

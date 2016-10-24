@@ -30,7 +30,7 @@ public class AskSupervisorFragment extends Fragment {
     public static final String KEY_NOMBRE_MEMBRES = "membres";
     public static final String KEY_PHONE = "phone";
     public static final String KEY_TAG = "tag";
-    private static final String REGISTER_URL = "http://ilink-app.com/app/";
+    private static final String REGISTER_URL = "https://ilink-app.com/app/";
     private Spinner ListMembres;
     private Button btn_ask_supervisor;
     private String e_membres;

@@ -40,7 +40,7 @@ public class LocalisationActivity extends AppCompatActivity implements OnMapRead
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_localisation);
+        setContentView(R.layout.activity_localisation);
         getSupportActionBar().hide();
         this.locatedText = (TextView) findViewById(R.id.textLocated);
         this.latitudeText = (TextView) findViewById(R.id.textLatitude);

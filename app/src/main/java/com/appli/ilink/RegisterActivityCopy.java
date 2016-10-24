@@ -47,7 +47,7 @@ public class RegisterActivityCopy extends AppCompatActivity implements View.OnCl
     private Spinner ListReseau = null;
     private String[] reseauItem;
 
-    private static final String REGISTER_URL = "http://ilink-app.com/app/";
+    private static final String REGISTER_URL = "https://ilink-app.com/app/";
 
     public static final String KEY_FIRSTNAME = "firstname";
     public static final String KEY_LASTNAME = "lastname";
@@ -60,7 +60,7 @@ public class RegisterActivityCopy extends AppCompatActivity implements View.OnCl
     public static final String KEY_LONGITUDE = "longitude";
     public static final String KEY_MEMBER_CODE = "member";
     public static final String KEY_CATEGORY = "category";
-    public static final String KEY_VALIDATE = "validate";
+    public static final String KEY_ACTIVE = "active";
     public static final String KEY_TAG = "tag";
 
 
@@ -359,7 +359,7 @@ public class RegisterActivityCopy extends AppCompatActivity implements View.OnCl
                                 params.put(KEY_LONGITUDE, longitude);
                                 params.put(KEY_COUNTRY, e_pays);
                                 params.put(KEY_CATEGORY, "utilisateur");
-                                params.put(KEY_VALIDATE, "non");
+                                params.put(KEY_ACTIVE, "non");
                                 params.put(KEY_TAG, "register");
                                 return params;
                             }

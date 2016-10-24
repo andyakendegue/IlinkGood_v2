@@ -23,7 +23,7 @@ import java.util.List;
 public class DemandesCreditFragment extends Fragment implements OnItemClickListener, OnRefreshListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String url = "http://ilink-app.com/app/";
+    private static final String url = "https://ilink-app.com/app/";
     private askCreditAdapter adapter;
     private List<creditAsk> askCreditList;
     private View demandeView;
@@ -80,7 +80,7 @@ public class DemandesCreditFragment extends Fragment implements OnItemClickListe
     }
 
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        creditAsk m = (creditAsk) this.askCreditList.get(position);
+        creditAsk m = this.askCreditList.get(position);
         Intent i = new Intent(getActivity(), MemberDetailActivity.class);
         i.putExtra("titre", String.valueOf(m.getNom_membre()));
         i.putExtra("image", String.valueOf(m.getMontant()));

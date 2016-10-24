@@ -27,10 +27,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.appli.ilink.adapter.memberGroupAdapter;
 import com.appli.ilink.app.AppController;
@@ -43,11 +46,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MemberAskGroupFragment extends Fragment implements OnItemClickListener, OnRefreshListener {
-    private static final String ACCEPT_URL = "http://ilink-app.com/app/select/accept_membre.php";
+    private static final String ACCEPT_URL = "https://ilink-app.com/app/select/accept_membre.php";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -60,6 +69,7 @@ public class MemberAskGroupFragment extends Fragment implements OnItemClickListe
     private ImageButton imgBtnDown;
     private ImageButton imgBtnUp;
     private ListView listView;
+    private TextView enAttente;
     private OnFragmentInteractionListener mListener;
     private String mParam1;
     private String mParam2;
@@ -103,19 +113,13 @@ public class MemberAskGroupFragment extends Fragment implements OnItemClickListe
         this.sharedPreferences = getActivity().getSharedPreferences(Config.SHARED_PREF_NAME, 0);
         this.imgBtnUp = (ImageButton) this.memberView.findViewById(R.id.imgBtnUp);
         this.imgBtnDown = (ImageButton) this.memberView.findViewById(R.id.imgBtnDown);
-        imgBtnUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getlocalUsersAsc();
-            }
-        });
 
-        imgBtnDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getlocalUsersDsc();
-            }
-        });
+        this.enAttente = (TextView) this.memberView.findViewById(R.id.textViewMember);
+        this.enAttente.setText("En attente de validation");
+
+        imgBtnUp.setVisibility(View.INVISIBLE);
+
+        imgBtnDown.setVisibility(View.INVISIBLE);
         new CheckUsers().execute();
         this.db = new DatabaseHandler(getActivity());
         this.memberListView.setOnItemClickListener(this);
@@ -123,7 +127,7 @@ public class MemberAskGroupFragment extends Fragment implements OnItemClickListe
     }
 
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        this.phoneRemote = ((TextView) view.findViewById(R.id.textMemberGroupPhone)).getText().toString();
+
         acceptUser(this.phoneRemote);
     }
 
@@ -152,7 +156,7 @@ public class MemberAskGroupFragment extends Fragment implements OnItemClickListe
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
 
-                        //acceptUserFromUser();
+                        new acceptUserFromUser().execute();
 
 
                     }
@@ -171,9 +175,103 @@ public class MemberAskGroupFragment extends Fragment implements OnItemClickListe
         alertDialog.show();
     }
 
-    /*private void acceptUserFromUser() {
-        Volley.newRequestQueue(getActivity()).add(new 8(this, 1, ACCEPT_URL, new 6(this), new 7(this)));
-    }*/
+    private class acceptUserFromUser extends AsyncTask<String, String, Boolean> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            pDialog = new MaterialDialog.Builder(getActivity())
+                    .title("Attendez svp!")
+                    .content("Vérification de la connexion réseau")
+                    .progress(true, 0)
+                    .cancelable(false)
+                    .show();
+        }
+
+        /**
+         * Gets current device state and checks for working internet connection by trying Google.
+         **/
+        @Override
+        protected Boolean doInBackground(String... args) {
+
+
+            ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getActiveNetworkInfo();
+            if (netInfo != null && netInfo.isConnected()) {
+                try {
+                    URL url = new URL("http://www.google.com");
+                    HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                    urlc.setConnectTimeout(3000);
+                    urlc.connect();
+                    if (urlc.getResponseCode() == 200) {
+                        return true;
+                    }
+                } catch (MalformedURLException e1) {
+                    // TODO Auto-generated catch block
+                    //e1.printStackTrace();
+                    Toast.makeText(getActivity(), "Url invalide : "+e1.toString(), Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    //e.printStackTrace();
+
+                    Toast.makeText(getActivity(), "Connexion au serveur impossible : "+e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+            return false;
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean th) {
+
+            if (th == true) {
+                pDialog.dismiss();
+                acceptFromBdd();
+            } else {
+                pDialog.dismiss();
+                Toast.makeText(getActivity().getApplicationContext(), "Erreur lors de la connexion au réseau", Toast.LENGTH_LONG).show();
+
+            }
+        }
+    }
+
+    private void acceptFromBdd() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ACCEPT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //Toast.makeText(RegisterActivity.this, response, Toast.LENGTH_LONG).show();
+                        // Toast.makeText(getActivity(), "Localisation a jour!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Le membre a ete accepté", Toast.LENGTH_LONG).show();
+                        refreshUsers();
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), "Connexion au serveur impossible : " + error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put(KEY_PHONE, phoneRemote);
+                return params;
+            }
+
+
+        };
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(stringRequest);
+
+
+    }
 
     private class CheckUsers extends AsyncTask<String, String, Boolean> {
 
@@ -216,7 +314,7 @@ public class MemberAskGroupFragment extends Fragment implements OnItemClickListe
 
             if (th == true) {
                 pDialog.dismiss();
-                getlocalUsers();
+                refreshUsers();
             } else {
                 pDialog.dismiss();
                 Toast.makeText(getActivity().getApplicationContext(), "Erreur lors de la connexion au réseau", Toast.LENGTH_LONG).show();
@@ -227,7 +325,7 @@ public class MemberAskGroupFragment extends Fragment implements OnItemClickListe
 
     private void refreshUsers() {
         //this.memberGroupList.clear();
-        //JsonArrayRequest movieReq = new JsonArrayRequest("http://ilink-app.com/app/select/demandes_membres.php", new 9(this), new 10(this));
+        //JsonArrayRequest movieReq = new JsonArrayRequest("https://ilink-app.com/app/select/demandes_membres.php", new 9(this), new 10(this));
         //AppController.getInstance().addToRequestQueue(movieReq, "json_array_req");
 
         String tag_json_arry = "json_array_req";
@@ -235,7 +333,7 @@ public class MemberAskGroupFragment extends Fragment implements OnItemClickListe
         memberGroupList.clear();
 
 
-        String url = "http://ilink-app.com/app/select/demandes_membres.php";
+        String url = "https://ilink-app.com/app/select/demandes_membres.php";
         // Creating volley request obj
         JsonArrayRequest movieReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -250,28 +348,29 @@ public class MemberAskGroupFragment extends Fragment implements OnItemClickListe
                                 JSONObject obj = response.getJSONObject(i);
 
 
-                                final String email = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+
                                 final String phone = sharedPreferences.getString(Config.PHONE_SHARED_PREF, "Not Available");
-                                final String network = sharedPreferences.getString(Config.NETWORK_SHARED_PREF, "Not Available");
+                                final String code_membre = sharedPreferences.getString(Config.MEMBER_CODE_SHARED_PREF, "Not Available");
 
 
 
 
-                                if (obj.getString("latitude") != null && obj.getString("network").equals(network) && obj.getString("category").equals("geolocated")) {
-                                    final LatLng latLng = new LatLng(Double.parseDouble(obj.getString("latitude")), Double.parseDouble(obj.getString("longitude")));
 
+                                if ( obj.getString("code").equals(code_membre) && obj.getString("Statut").equals("en cours")) {
+
+
+                                    phoneRemote = obj.getString("phone");
 
                                     memberGroup members = new memberGroup();
-                                    members.setName(String.valueOf(Html.fromHtml(obj.getString("lastname"))));
-                                    members.setBalance(obj.getString("balance"));
-                                    members.setAdress(obj.getString("firstname"));
-                                    members.setPhone(obj.getString("phone"));
+
+                                    members.setName(String.valueOf("Telephone : "+Html.fromHtml(obj.getString("phone"))));
+                                    //members.setBalance("Categorie : "+obj.getString("categorie"));
+                                    members.setAdress("Code membre : "+obj.getString("code"));
+                                    members.setPhone("Nombre de membres : "+obj.getString("nbrecode"));
+                                    members.setActive("Statut : "+obj.getString("Statut"));
                                     // adding movie to movies array
                                     memberGroupList.add(members);
-                                    if (obj.getString("member_code").equals(phone)) {
-                                        //Toast.makeText(getActivity().getApplicationContext(), "Email "+email, Toast.LENGTH_LONG).show();
-                                    } else {
-                                    }
+
 
                                 } else {
 
@@ -282,7 +381,7 @@ public class MemberAskGroupFragment extends Fragment implements OnItemClickListe
 
                             } catch (JSONException e) {
                                 //e.printStackTrace();
-                                Toast.makeText(getActivity(), "Impossible de recuperer les marqueurs : " + e.toString(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "Impossible de recuperer les marqueurs " , Toast.LENGTH_LONG).show();
                             }
 
 
@@ -299,7 +398,7 @@ public class MemberAskGroupFragment extends Fragment implements OnItemClickListe
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Erreur : " + error.getMessage());
-                Toast.makeText(getActivity(), "Erreur de connexion"+error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Erreur de connexion", Toast.LENGTH_SHORT).show();
 
 
             }
@@ -308,107 +407,7 @@ public class MemberAskGroupFragment extends Fragment implements OnItemClickListe
         AppController.getInstance().addToRequestQueue(movieReq, tag_json_arry);
     }
 
-    private void getlocalUsersAsc() {
-        this.memberGroupList.clear();
-        ArrayList<usersModel> users = this.db.getUsersDetailsAsc();
-        int usersLength = users.size();
-        String email = this.sharedPreferences.getString(KEY_EMAIL, "Not Available");
-        String phone = this.sharedPreferences.getString(KEY_PHONE, "Not Available");
-        String network = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_NETWORK, "Not Available");
-        String code_parrain = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_MEMBER_CODE, "Not Available");
-        String category = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_CATEGORY, "Not Available");
-        String categorie;
-        if (category == "hyper") {
-            categorie = "super";
-        } else if (category == "super") {
-            categorie = "geolocated";
-        }
-        for (int i = 0; i < usersLength; i++) {
-            usersModel u = (usersModel) users.get(i);
-            if (u.getLatitude() != null && u.getNetwork().equals(network) && u.getCode_parrain().equals(code_parrain)) {
-                memberGroup members = new memberGroup();
-                members.setName(String.valueOf(Html.fromHtml(u.getLastname())));
-                members.setBalance(u.getBalance());
-                members.setAdress(u.getName());
-                members.setPhone(u.getPhone());
-                this.memberGroupList.add(members);
-            }
-        }
-        if (this.memberGroupList != null) {
-            this.adapter = new memberGroupAdapter(getActivity(), this.memberGroupList);
-        }
-        this.memberListView.setAdapter(this.adapter);
-    }
 
-    private void getlocalUsersDsc() {
-        this.memberGroupList.clear();
-        ArrayList<usersModel> users = this.db.getUsersDetailsDsc();
-        int usersLength = users.size();
-        String email = this.sharedPreferences.getString(KEY_EMAIL, "Not Available");
-        String phone = this.sharedPreferences.getString(KEY_PHONE, "Not Available");
-        String network = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_NETWORK, "Not Available");
-        String code_parrain = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_MEMBER_CODE, "Not Available");
-        String category = this.sharedPreferences.getString(RegisterSimpleActivity.KEY_CATEGORY, "Not Available");
-        String categorie;
-        if (category == "hyper") {
-            categorie = "super";
-        } else if (category == "super") {
-            categorie = "geolocated";
-        }
-        for (int i = 0; i < usersLength; i++) {
-            usersModel u = (usersModel) users.get(i);
-            if (u.getLatitude() != null && u.getNetwork().equals(network) && u.getCode_parrain().equals(code_parrain)) {
-                memberGroup members = new memberGroup();
-                members.setName(String.valueOf(Html.fromHtml(u.getLastname())));
-                members.setBalance(u.getBalance());
-                members.setAdress(u.getName());
-                members.setPhone(u.getPhone());
-                this.memberGroupList.add(members);
-            }
-        }
-        if (this.memberGroupList != null) {
-            this.adapter = new memberGroupAdapter(getActivity(), this.memberGroupList);
-        }
-        this.memberListView.setAdapter(this.adapter);
-    }
-
-    private void getlocalUsers() {
-
-
-        ArrayList<usersModel> users = db.getUsersDetails();
-        int usersLength = users.size();
-
-        final String email = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
-        final String phone = sharedPreferences.getString(Config.PHONE_SHARED_PREF, "Not Available");
-        final String network = sharedPreferences.getString(Config.NETWORK_SHARED_PREF, "Not Available");
-
-        for (int i = 0; i < usersLength ; i++) {
-            usersModel u = users.get(i);
-
-
-
-
-            if (u.getLatitude() != null && u.getNetwork().equals(network) && u.getCategory().equals("geolocated")) {
-                memberGroup members = new memberGroup();
-                members.setName(String.valueOf(Html.fromHtml(u.getLastname())));
-                members.setBalance(u.getBalance());
-                members.setAdress(u.getName());
-                members.setPhone(u.getPhone());
-                // adding movie to movies array
-                memberGroupList.add(members);
-            }
-
-        }
-
-
-        if (memberGroupList!=null) {
-            adapter = new memberGroupAdapter(getActivity(), memberGroupList);
-        }
-
-
-
-        memberListView.setAdapter(adapter);
-    }
 
 
     public interface OnFragmentInteractionListener {

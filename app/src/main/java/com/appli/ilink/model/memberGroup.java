@@ -4,7 +4,7 @@ package com.appli.ilink.model;
  * Created by capp on 15/04/16.
  */
 public class memberGroup {
-    private String name, balance, adress, email,phone;
+    private String name, balance, adress, phone, active;
 
 
 
@@ -12,6 +12,15 @@ public class memberGroup {
 
     }
 
+
+
+    public memberGroup(String name, String balance, String adress, String phone, String active) {
+        this.name = name;
+        this.balance = balance;
+        this.adress = adress;
+        this.phone = phone;
+        this.active = active;
+    }
     public String getPhone() {
         return phone;
     }
@@ -19,14 +28,6 @@ public class memberGroup {
     public memberGroup setPhone(String phone) {
         this.phone = phone;
         return this;
-    }
-
-    public memberGroup(String name, String balance, String adress, String phone) {
-        this.name = name;
-        this.balance = balance;
-        this.adress = adress;
-        this.email = email;
-        this.phone = phone;
     }
 
     public String getName() {
@@ -53,12 +54,13 @@ public class memberGroup {
         this.adress = adress;
     }
 
-    public String getEmail() {
-        return email;
+
+
+    public String getActive() {
+        return active;
     }
 
-    public memberGroup setEmail(String email) {
-        this.email = email;
-        return this;
+    public void setActive(String active) {
+        this.active = active;
     }
 }
