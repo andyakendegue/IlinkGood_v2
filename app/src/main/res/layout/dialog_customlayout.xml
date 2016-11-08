@@ -26,7 +26,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Montant de la transaction"
+        android:text="Montant du dépot désiré"
         android:id="@+id/textView13"
         android:textSize="20sp"
         android:layout_gravity="center_horizontal"

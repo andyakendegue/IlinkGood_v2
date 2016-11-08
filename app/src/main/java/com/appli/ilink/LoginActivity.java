@@ -227,6 +227,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     }
 
     public void onClick(View v) {
+
         new UserLoginTask().execute();
     }
 

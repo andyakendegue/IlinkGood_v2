@@ -244,13 +244,16 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
 
     public void onClick(View v) {
         if (v == this.buttonRegister) {
-            try {
+
+            new UserRegisertTask().execute();
+            /*try {
                 registerUser();
             } catch (NumberParseException e) {
                 //e.printStackTrace();
                 Toast.makeText(RegisterActivity.this, "Une erreur s'est produite :" +e.toString(), Toast.LENGTH_LONG).show();
 
             }
+            */
         }
     }
 
@@ -398,6 +401,12 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
     }
 
     private void registerUser() throws NumberParseException {
+        pDialog = new MaterialDialog.Builder(RegisterActivity.this)
+                .title("Attendez svp!")
+                .content("Enregistrement en cours")
+                .progress(true, 0)
+                .cancelable(false)
+                .show();
         final String prenom = firstname.getText().toString().trim();
         final String nom = lastname.getText().toString().trim();
         final String password = editTextPassword.getText().toString().trim();
@@ -437,12 +446,14 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
                                     public void onResponse(String response) {
                                         //Toast.makeText(RegisterActivity.this, response, Toast.LENGTH_LONG).show();
                                         if(response.equalsIgnoreCase(Config.LOGIN_SUCCESS)) {
+                                            hidePDialog();
                                             Toast.makeText(RegisterActivity.this, "Enregistrement reussi! Recuperez le code de validation qui vous a ete envoye, ensuite, reconnectez-vous avec le numero de telephone et le mot de passe specifie lors de votre enregistrement.", Toast.LENGTH_LONG).show();
                                             Intent i = new Intent(RegisterActivity.this, LoginGeolocatedActivity.class);
                                             startActivity(i);
 
                                             finish();
                                         }else {
+                                            hidePDialog();
                                             Toast.makeText(RegisterActivity.this, response, Toast.LENGTH_LONG).show();
 
                                         }
@@ -451,6 +462,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
                                 new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
+                                        hidePDialog();
                                         Toast.makeText(RegisterActivity.this, "Impossible de se connecter au serveur"+error.toString(), Toast.LENGTH_LONG).show();
                                     }
                                 }) {
@@ -459,19 +471,19 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
 
                             protected Map<String, String> getParams() {
                                 Map<String, String> params = new HashMap();
-                                params.put(AddSuperviseurActivity.KEY_FIRSTNAME, prenom);
-                                params.put(AddSuperviseurActivity.KEY_LASTNAME, nom);
-                                params.put(AddSuperviseurActivity.KEY_PASSWORD, password);
-                                params.put(AddSuperviseurActivity.KEY_EMAIL, email);
-                                params.put(AddSuperviseurActivity.KEY_PHONE, phoneSend);
-                                params.put(AddSuperviseurActivity.KEY_NETWORK, e_reseau);
-                                params.put(AddSuperviseurActivity.KEY_MEMBER_CODE, member_code);
-                                params.put(AddSuperviseurActivity.KEY_LATITUDE, latitude);
-                                params.put(AddSuperviseurActivity.KEY_LONGITUDE, longitude);
-                                params.put(AddSuperviseurActivity.KEY_COUNTRY, pays);
-                                params.put(AddSuperviseurActivity.KEY_CATEGORY, "geolocated");
-                                params.put(AddSuperviseurActivity.KEY_ACTIVE, "non");
-                                params.put(AddSuperviseurActivity.KEY_TAG, "register_geolocated");
+                                params.put(KEY_FIRSTNAME, prenom);
+                                params.put(KEY_LASTNAME, nom);
+                                params.put(KEY_PASSWORD, password);
+                                params.put(KEY_EMAIL, email);
+                                params.put(KEY_PHONE, phoneSend);
+                                params.put(KEY_NETWORK, e_reseau);
+                                params.put(KEY_MEMBER_CODE, member_code);
+                                params.put(KEY_LATITUDE, latitude);
+                                params.put(KEY_LONGITUDE, longitude);
+                                params.put(KEY_COUNTRY, pays);
+                                params.put(KEY_CATEGORY, "geolocated");
+                                params.put(KEY_ACTIVE, "non");
+                                params.put(KEY_TAG, "register_geolocated");
                                 return params;
                             }
 
@@ -486,19 +498,23 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
                         requestQueue.add(stringRequest);
 
                     } else {
+                        hidePDialog();
                         Toast.makeText(RegisterActivity.this, "Pas encore localise!", Toast.LENGTH_LONG).show();
                     }
                 } else {
+                    hidePDialog();
                     Toast.makeText(getApplicationContext(),
                             "Les mots de passe entres ne correspondent pas. Essayez de nouveau!", Toast.LENGTH_SHORT).show();
 
                 }
 
             } else {
+                hidePDialog();
                 Toast.makeText(getApplicationContext(),
                         "Le pseudonyme doit être au minimum de 5 caractères", Toast.LENGTH_SHORT).show();
             }
         } else {
+            hidePDialog();
             Toast.makeText(getApplicationContext(),
                     "Un ou plusieurs champs sont vides", Toast.LENGTH_SHORT).show();
         }
@@ -576,6 +592,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
 
             }
         });
+        dialog.setCancelable(false);
         dialog.show();
     }
 
@@ -650,7 +667,7 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
             pDialog = null;
         }
     }
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserRegisertTask extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected void onPreExecute() {
@@ -698,7 +715,9 @@ public class RegisterActivity extends AppCompatActivity implements OnClickListen
                 hidePDialog();
                 //e.printStackTrace();
                 //
-                callSnackbar(e.getMessage());
+                //callSnackbar(e.getMessage());
+                Toast.makeText(RegisterActivity.this, "Une erreur s'est produite :" +e.toString(), Toast.LENGTH_LONG).show();
+
 
             }
             // Start Registering

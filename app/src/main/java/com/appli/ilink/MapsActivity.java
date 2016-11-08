@@ -1,22 +1,20 @@
 package com.appli.ilink;
 
-import android.*;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.IntentSender.SendIntentException;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,8 +24,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ScrollingView;
 import android.support.v7.app.AlertDialog;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,25 +36,23 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.MaterialDialog.Builder;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -62,18 +60,15 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.directions.route.AbstractRouting;
-import com.directions.route.AbstractRouting.TravelMode;
 import com.directions.route.Route;
 import com.directions.route.RouteException;
 import com.directions.route.Routing;
 import com.directions.route.RoutingListener;
-import com.google.android.gms.cast.TextTrackStyle;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -90,10 +85,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.wearable.MessageApi;
-import com.appli.ilink.Util.Operations;
 import com.appli.ilink.app.AppController;
 import com.appli.ilink.model.myMarker;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -139,9 +135,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final String KEY_TAG = "tag";
     public static final String KEY_COUNTRY = "country_code";
     private LinearLayout relativeLayout;
-    private FrameLayout frameLayout;
-    private TextView displayDistance;
-    private TextView displayDuration;
     private Criteria crit = new Criteria();
     private Location currentLoc;
     private SharedPreferences sharedPreferences;
@@ -172,20 +165,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String[] montantItem;
     private String e_montant;
     private String[] reseauItem;
-    private List<String> listReseau ;
+    private static List<String> listReseau;
+    private SlidingUpPanelLayout mLayout;
 
+    // Slide Panel view
+    private TextView t;
+    private TextView u;
+    private ImageButton f;
+    private ScrollView sv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         CheckEnableGPS();
-
+        listReseau = new ArrayList<String>();
         latitude = 0.0;
         longitude = 0.0;
-        displayDistance = (TextView) findViewById(R.id.textDistance);
-        displayDuration = (TextView) findViewById(R.id.textDuration);
-        frameLayout = (FrameLayout) findViewById(R.id.frameMaps);
-        frameLayout.setVisibility(View.INVISIBLE);
         relativeLayout = (LinearLayout) findViewById(R.id
                 .tgLayout);
         sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -288,7 +283,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                frameLayout.setVisibility(View.INVISIBLE);
+
                                 map.clear();
                                 new SearchAllLocations().execute();
                             }
@@ -354,7 +349,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
                         public void onMapLoaded() {
                             // Add a marker in Sydney and move the camera
-                            frameLayout.setVisibility(View.INVISIBLE);
+
 
                             final SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                             final String lat = sharedPreferences.getString(Config.LATITUDE_SHARED_PREF, "Not Available");
@@ -389,7 +384,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     new CheckLocations().execute();
 
                 } else {
-                    frameLayout.setVisibility(View.INVISIBLE);
+
                     typeReseau = 2;
                     map.clear();
                     new CheckAllLocations().execute();
@@ -489,6 +484,59 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         }, ADVICE_TIME_OUT);
+
+
+        // Sliding Panel
+        t = (TextView) findViewById(R.id.name);
+        u = (TextView) findViewById(R.id.name1);
+        t.setText(Html.fromHtml("Trouvez votre chemin"));
+        t.setText(Html.fromHtml("Avec un temps de parcours exact"));
+        f = (ImageButton) findViewById(R.id.follow);
+        f.setBackgroundResource(R.drawable.ic_expand_less);
+
+        mLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        mLayout.addPanelSlideListener(new PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                Log.i(TAG, "onPanelSlide, offset " + slideOffset);
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, PanelState previousState, PanelState newState) {
+                Log.i(TAG, "onPanelStateChanged " + newState);
+
+                if (newState.equals(PanelState.EXPANDED)) {
+                    f.setBackgroundResource(R.drawable.ic_expand_more);
+                } else {
+                    f.setBackgroundResource(R.drawable.ic_expand_less);
+                }
+            }
+        });
+        mLayout.setFadeOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLayout.setPanelState(PanelState.COLLAPSED);
+
+            }
+        });
+
+        f.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mLayout.getPanelState().equals(PanelState.EXPANDED))
+                {
+                    mLayout.setPanelState(PanelState.COLLAPSED);
+                } else {
+                    mLayout.setPanelState(PanelState.EXPANDED);
+                }
+
+            }
+        });
+
+
+        // Create Layout
+        //ScrollView
+        sv = (ScrollView) findViewById(R.id.sv);
 
 
     }
@@ -793,6 +841,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .cancelable(false)
                 .show();
 
+        // recupere la liste des reseaux
+        getnetworkList();
         //String url = "https://ilink-app.com/app/select/locations.php";
         String url = "https://ilink-app.com/app/select/locations.php";
         // Creating volley request obj
@@ -820,8 +870,202 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     final LatLng latLng = new LatLng(Double.parseDouble(obj.getString("latitude")), Double.parseDouble(obj.getString("longitude")));
 
 
-                                    map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
-                                            latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_member)));
+
+
+
+
+
+                                    if(obj.getString("network").equals(listReseau.get(0))) {
+                                        //Creating Legende view .
+                                        //Creating LinearLayout.
+                                        LinearLayout Horizontallinearlayout = new LinearLayout(MapsActivity.this);
+
+                                        //Setting up LinearLayout Orientation
+                                        Horizontallinearlayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                                        LayoutParams Horizontallinearlayoutlayoutparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
+
+                                        sv.addView(Horizontallinearlayout, Horizontallinearlayoutlayoutparams);
+
+                                        LayoutParams LayoutParamsview = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+                                        TextView text1 = new TextView(MapsActivity.this);
+                                        text1.setText(obj.getString("network"));
+                                        text1.setLayoutParams(LayoutParamsview);
+                                        ImageView image1 = new ImageView(MapsActivity.this);
+                                        image1.setImageResource(R.drawable.location_network1);
+                                        image1.setLayoutParams(LayoutParamsview);
+                                        Horizontallinearlayout.addView(text1);
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_network1)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(1))) {
+                                        //Creating Legende view .
+                                        //Creating LinearLayout.
+                                        LinearLayout Horizontallinearlayout = new LinearLayout(MapsActivity.this);
+
+                                        //Setting up LinearLayout Orientation
+                                        Horizontallinearlayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                                        LayoutParams Horizontallinearlayoutlayoutparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
+
+                                        sv.addView(Horizontallinearlayout, Horizontallinearlayoutlayoutparams);
+
+                                        LayoutParams LayoutParamsview = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+                                        TextView text1 = new TextView(MapsActivity.this);
+                                        text1.setText(obj.getString("network"));
+                                        text1.setLayoutParams(LayoutParamsview);
+                                        ImageView image1 = new ImageView(MapsActivity.this);
+                                        image1.setImageResource(R.drawable.location_network2);
+                                        image1.setLayoutParams(LayoutParamsview);
+                                        Horizontallinearlayout.addView(text1);
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_network2)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(2))) {
+                                        //Creating Legende view .
+                                        //Creating LinearLayout.
+                                        LinearLayout Horizontallinearlayout = new LinearLayout(MapsActivity.this);
+
+                                        //Setting up LinearLayout Orientation
+                                        Horizontallinearlayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                                        LayoutParams Horizontallinearlayoutlayoutparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
+
+                                        sv.addView(Horizontallinearlayout, Horizontallinearlayoutlayoutparams);
+
+                                        LayoutParams LayoutParamsview = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+                                        TextView text1 = new TextView(MapsActivity.this);
+                                        text1.setText(obj.getString("network"));
+                                        text1.setLayoutParams(LayoutParamsview);
+                                        ImageView image1 = new ImageView(MapsActivity.this);
+                                        image1.setImageResource(R.drawable.location_network3);
+                                        image1.setLayoutParams(LayoutParamsview);
+                                        Horizontallinearlayout.addView(text1);
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_network3)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(3))) {
+                                        //Creating Legende view .
+                                        //Creating LinearLayout.
+                                        LinearLayout Horizontallinearlayout = new LinearLayout(MapsActivity.this);
+
+                                        //Setting up LinearLayout Orientation
+                                        Horizontallinearlayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                                        LayoutParams Horizontallinearlayoutlayoutparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
+
+                                        sv.addView(Horizontallinearlayout, Horizontallinearlayoutlayoutparams);
+
+                                        LayoutParams LayoutParamsview = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+                                        TextView text1 = new TextView(MapsActivity.this);
+                                        text1.setText(obj.getString("network"));
+                                        text1.setLayoutParams(LayoutParamsview);
+                                        ImageView image1 = new ImageView(MapsActivity.this);
+                                        image1.setImageResource(R.drawable.location_network4);
+                                        image1.setLayoutParams(LayoutParamsview);
+                                        Horizontallinearlayout.addView(text1);
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_network4)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(4))) {
+                                        //Creating Legende view .
+                                        //Creating LinearLayout.
+                                        LinearLayout Horizontallinearlayout = new LinearLayout(MapsActivity.this);
+
+                                        //Setting up LinearLayout Orientation
+                                        Horizontallinearlayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                                        LayoutParams Horizontallinearlayoutlayoutparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
+
+                                        sv.addView(Horizontallinearlayout, Horizontallinearlayoutlayoutparams);
+
+                                        LayoutParams LayoutParamsview = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+                                        TextView text1 = new TextView(MapsActivity.this);
+                                        text1.setText(obj.getString("network"));
+                                        text1.setLayoutParams(LayoutParamsview);
+                                        ImageView image1 = new ImageView(MapsActivity.this);
+                                        image1.setImageResource(R.drawable.location_network5);
+                                        image1.setLayoutParams(LayoutParamsview);
+                                        Horizontallinearlayout.addView(text1);
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_network5)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(5))) {
+                                        //Creating Legende view .
+                                        //Creating LinearLayout.
+                                        LinearLayout Horizontallinearlayout = new LinearLayout(MapsActivity.this);
+
+                                        //Setting up LinearLayout Orientation
+                                        Horizontallinearlayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                                        LayoutParams Horizontallinearlayoutlayoutparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
+
+                                        sv.addView(Horizontallinearlayout, Horizontallinearlayoutlayoutparams);
+
+                                        LayoutParams LayoutParamsview = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+                                        TextView text1 = new TextView(MapsActivity.this);
+                                        text1.setText(obj.getString("network"));
+                                        text1.setLayoutParams(LayoutParamsview);
+                                        ImageView image1 = new ImageView(MapsActivity.this);
+                                        image1.setImageResource(R.drawable.location_network5);
+                                        image1.setLayoutParams(LayoutParamsview);
+                                        Horizontallinearlayout.addView(text1);
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_member)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(6))) {
+
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_member)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(7))) {
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_member)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(8))) {
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_member)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(9))) {
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_member)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(10))) {
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_member)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(11))) {
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_member)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(12))) {
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_member)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(13))) {
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_member)));
+
+                                    } else if(obj.getString("network").equals(listReseau.get(14))) {
+                                        map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_member)));
+
+                                    }else  {
+
+                                    }
+
 
 
                                 } else {
@@ -1365,7 +1609,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void toastDistance(Location starting, Location arrival) {
 
 
-        frameLayout.setVisibility(View.VISIBLE);
 
         if (starting != null) {
             //float distance = currentLoc.distanceTo(pointLocation);
@@ -1383,7 +1626,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 dist = dista + " KM";
             }
 
-            displayDistance.setText("Le point est situé à : " + dist);
+
+            t.setText("Le point est situé à : " + dist);
             //Toast.makeText(MapsActivity.this, ""+dist, Toast.LENGTH_SHORT).show();
 
 
@@ -1400,7 +1644,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private float getlocalDistance(Location start, Location arrive) {
 
 
-        frameLayout.setVisibility(View.INVISIBLE);
 
         if (start != null) {
 
@@ -1442,7 +1685,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String getDistance(Location starting, Location arrival) {
 
 
-        frameLayout.setVisibility(View.VISIBLE);
 
         if (starting != null) {
             //float distance = currentLoc.distanceTo(pointLocation);
@@ -1462,7 +1704,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
 
-            displayDistance.setText("Le point est situé à : " + dist);
+
+            t.setText("Le point est situé à : " + dist);
 
             return dist;
 
@@ -1879,7 +2122,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     for(int k=0;k<1;k++) {
                                         jDuration = ((JSONObject) jLegs.get(j)).getJSONObject("duration");
                                         //Toast.makeText(MapsActivity.this, jDuration.toString(), Toast.LENGTH_LONG).show();
-                                        displayDuration.setText("Vous y serez en "+jDuration.getString("text"));
+
+                                        u.setText("Vous y serez en "+jDuration.getString("text"));
 
                                     }
 
@@ -2025,6 +2269,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 }
             });
+            dialog.setCancelable(false);
             dialog.show();
         }
 
@@ -2046,12 +2291,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-        pDialog = new MaterialDialog.Builder(MapsActivity.this)
-                .title("Attendez svp!")
-                .content("Recuperation de la liste des réseaux")
-                .progress(true, 0)
-                .cancelable(false)
-                .show();
+
         //String url = "https://ilink-app.com/app/select/locations.php";
         String url = "https://ilink-app.com/app/select/network.php";
         Map<String, String> params = new HashMap<String, String>();
@@ -2063,7 +2303,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        hidePDialog();
+
 
                         Log.d(TAG, response.toString());
 
@@ -2075,32 +2315,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
                                 //In onresume fetching value from sharedpreference
-
-
-
-
-                                /*Iterator<?> keys = obj.keys(); // get the keys of the jsonObject
-                                while(keys.hasNext()) {
-                                    //iterrate over them
-                                    String key = (String)keys.next();
-                                    if(obj.optString(key).trim()!=null) {
-
-                                        String data = obj.optString(key);
-
-                                        if (data.length()==0) {
-
-                                        } else {
-                                            listReseau.add(obj.optString(key));
-
-                                        }
-
-
-                                    } else {
-
-                                    }
-
-                                }
-                                */
 
 
                                 Iterator<?> iter = obj.keys();
@@ -2123,15 +2337,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                         } else {
 
+                                            // enleve le champs du pays
                                             if(data.equalsIgnoreCase(pays)) {
 
                                             } else {
+                                                // ajoute les autres champs
                                                 listReseau.add(obj.optString(key));
                                             }
-
-
-
-
 
 
                                         }
@@ -2176,5 +2388,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(movieReq, tag_json_arry);
     }
+
+
+
 
 }

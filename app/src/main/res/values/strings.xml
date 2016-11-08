@@ -147,6 +147,6 @@
     <string name="combien_de_superviseurs_dans_votre_r_seau">Combien de superviseurs dans votre réseau?</string>
     <string name="saisissez_le_code_de_validation_re_u">Saisissez le code de validation reçu</string>
     <string name="dialog_title">Impossible de recuperer les reseaux</string>
-    <string name="dialog_message">La liste des reseaux n\'a pu etre recuperee. souhaitez vous relancer la recuperation?</string>
+    <string name="dialog_message">La liste des reseaux n\'a pu etre recuperee. Votre connexion internet semble inactive. Veuillez verifier l\'etat de votre connexion internet.</string>
     <string name="cancel">non</string>
 </resources>

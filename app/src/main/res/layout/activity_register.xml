@@ -49,7 +49,11 @@
         </LinearLayout>
         <TextView android:id="@+id/textLatitude" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" />
         <TextView android:id="@+id/textLongitude" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" />
-        <Button android:id="@+id/buttonRegister" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Inscription" />
+        <Button android:id="@+id/buttonRegister" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Inscription"
+
+        android:background='@drawable/first_button'
+            android:textStyle="normal|bold"
+            android:textColor="#ffffff" />
     </LinearLayout>
 </ScrollView>
 </android.support.design.widget.CoordinatorLayout>
