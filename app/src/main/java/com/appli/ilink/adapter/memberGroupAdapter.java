@@ -51,7 +51,7 @@ public class memberGroupAdapter extends BaseAdapter {
         if (convertView == null)
             convertView = inflater.inflate(R.layout.member_group_list_item, null);
 
-        TextView name = (TextView) convertView.findViewById(R.id.textMemberGroupName);
+        TextView name = (TextView) convertView.findViewById(R.id.textLegendeName);
         TextView amount = (TextView) convertView.findViewById(R.id.textMemberGroupAmount);
         TextView adress = (TextView) convertView.findViewById(R.id.textMemberGroupAdress);
         TextView phone = (TextView) convertView.findViewById(R.id.textMemberGroupPhone);

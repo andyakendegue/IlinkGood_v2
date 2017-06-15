@@ -399,8 +399,8 @@ public class MemberGroupFragment extends Fragment implements OnItemClickListener
                         if (memberGroupList!=null) {
                             adapter = new memberGroupAdapter(getActivity(), memberGroupList);
                         }
-
                         memberListView.setAdapter(adapter);
+
 
                     }
                 }, new Response.ErrorListener() {

@@ -145,12 +145,20 @@ sothree:umanoShadowHeight="4dp">
     </LinearLayout>
 
 
-    <ScrollView
-    android:id="@+id/sv"
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="1"
-    >
-    </ScrollView>
-</LinearLayout>
+    <TextView
+        android:text="Légendes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewLegende"
+        android:textAlignment="center"
+        android:textStyle="normal|bold"
+        android:textSize="24sp"
+        android:textAllCaps="true" />
+
+    <ListView
+            android:id="@+id/sv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
 </com.sothree.slidinguppanel.SlidingUpPanelLayout>

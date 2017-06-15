@@ -14,7 +14,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,10 +23,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ScrollingView;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,15 +34,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import android.widget.LinearLayout.LayoutParams;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -59,6 +54,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.appli.ilink.adapter.LegendeAdapter;
+import com.appli.ilink.model.legendeModel;
 import com.directions.route.AbstractRouting;
 import com.directions.route.Route;
 import com.directions.route.RouteException;
@@ -111,11 +108,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean checked;
     private boolean notShowing = false;
 
+    private LegendeAdapter adapter;
     //boolean variable to check user is logged in or not
     //initially it is false
     private boolean loggedIn = false;
     private int typeReseau = 1;
 
+    private List<legendeModel> memberGroupList;
+    private ListView memberListView;
     // Route
 
     protected LatLng start;
@@ -172,13 +172,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView t;
     private TextView u;
     private ImageButton f;
-    private ScrollView sv;
+    private ListView sv;
+    private TextView legendes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         CheckEnableGPS();
-        listReseau = new ArrayList<String>();
+        listReseau = new ArrayList();
+        this.memberGroupList = new ArrayList();
         latitude = 0.0;
         longitude = 0.0;
         relativeLayout = (LinearLayout) findViewById(R.id
@@ -187,6 +189,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         connexionCompte = 0;
 
+        this.memberListView = (ListView) findViewById(R.id.listMemberGroupAll);
+        this.legendes = (TextView) findViewById(R.id.textViewLegende);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabMap);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -490,7 +494,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         t = (TextView) findViewById(R.id.name);
         u = (TextView) findViewById(R.id.name1);
         t.setText(Html.fromHtml("Trouvez votre chemin"));
-        t.setText(Html.fromHtml("Avec un temps de parcours exact"));
+        u.setText(Html.fromHtml("Avec un temps de parcours exact"));
         f = (ImageButton) findViewById(R.id.follow);
         f.setBackgroundResource(R.drawable.ic_expand_less);
 
@@ -535,8 +539,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         // Create Layout
-        //ScrollView
-        sv = (ScrollView) findViewById(R.id.sv);
+        //ListView
+        sv = (ListView) findViewById(R.id.sv);
 
 
     }
@@ -715,6 +719,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .progress(true, 0)
                 .cancelable(false)
                 .show();
+        this.legendes.setVisibility(View.INVISIBLE);
+        memberGroupList.clear();
 
 
         //String url = "https://ilink-app.com/app/select/locations.php";
@@ -872,158 +878,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-
-
-
                                     if(obj.getString("network").equals(listReseau.get(0))) {
-                                        //Creating Legende view .
-                                        //Creating LinearLayout.
-                                        LinearLayout Horizontallinearlayout = new LinearLayout(MapsActivity.this);
 
-                                        //Setting up LinearLayout Orientation
-                                        Horizontallinearlayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                                        LayoutParams Horizontallinearlayoutlayoutparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
-
-                                        sv.addView(Horizontallinearlayout, Horizontallinearlayoutlayoutparams);
-
-                                        LayoutParams LayoutParamsview = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-                                        TextView text1 = new TextView(MapsActivity.this);
-                                        text1.setText(obj.getString("network"));
-                                        text1.setLayoutParams(LayoutParamsview);
-                                        ImageView image1 = new ImageView(MapsActivity.this);
-                                        image1.setImageResource(R.drawable.location_network1);
-                                        image1.setLayoutParams(LayoutParamsview);
-                                        Horizontallinearlayout.addView(text1);
                                         map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
                                                 latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_network1)));
 
                                     } else if(obj.getString("network").equals(listReseau.get(1))) {
-                                        //Creating Legende view .
-                                        //Creating LinearLayout.
-                                        LinearLayout Horizontallinearlayout = new LinearLayout(MapsActivity.this);
 
-                                        //Setting up LinearLayout Orientation
-                                        Horizontallinearlayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                                        LayoutParams Horizontallinearlayoutlayoutparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
-
-                                        sv.addView(Horizontallinearlayout, Horizontallinearlayoutlayoutparams);
-
-                                        LayoutParams LayoutParamsview = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-                                        TextView text1 = new TextView(MapsActivity.this);
-                                        text1.setText(obj.getString("network"));
-                                        text1.setLayoutParams(LayoutParamsview);
-                                        ImageView image1 = new ImageView(MapsActivity.this);
-                                        image1.setImageResource(R.drawable.location_network2);
-                                        image1.setLayoutParams(LayoutParamsview);
-                                        Horizontallinearlayout.addView(text1);
                                         map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
                                                 latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_network2)));
 
                                     } else if(obj.getString("network").equals(listReseau.get(2))) {
-                                        //Creating Legende view .
-                                        //Creating LinearLayout.
-                                        LinearLayout Horizontallinearlayout = new LinearLayout(MapsActivity.this);
 
-                                        //Setting up LinearLayout Orientation
-                                        Horizontallinearlayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                                        LayoutParams Horizontallinearlayoutlayoutparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
-
-                                        sv.addView(Horizontallinearlayout, Horizontallinearlayoutlayoutparams);
-
-                                        LayoutParams LayoutParamsview = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-                                        TextView text1 = new TextView(MapsActivity.this);
-                                        text1.setText(obj.getString("network"));
-                                        text1.setLayoutParams(LayoutParamsview);
-                                        ImageView image1 = new ImageView(MapsActivity.this);
-                                        image1.setImageResource(R.drawable.location_network3);
-                                        image1.setLayoutParams(LayoutParamsview);
-                                        Horizontallinearlayout.addView(text1);
                                         map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
                                                 latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_network3)));
 
                                     } else if(obj.getString("network").equals(listReseau.get(3))) {
-                                        //Creating Legende view .
-                                        //Creating LinearLayout.
-                                        LinearLayout Horizontallinearlayout = new LinearLayout(MapsActivity.this);
 
-                                        //Setting up LinearLayout Orientation
-                                        Horizontallinearlayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                                        LayoutParams Horizontallinearlayoutlayoutparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
-
-                                        sv.addView(Horizontallinearlayout, Horizontallinearlayoutlayoutparams);
-
-                                        LayoutParams LayoutParamsview = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-                                        TextView text1 = new TextView(MapsActivity.this);
-                                        text1.setText(obj.getString("network"));
-                                        text1.setLayoutParams(LayoutParamsview);
-                                        ImageView image1 = new ImageView(MapsActivity.this);
-                                        image1.setImageResource(R.drawable.location_network4);
-                                        image1.setLayoutParams(LayoutParamsview);
-                                        Horizontallinearlayout.addView(text1);
                                         map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
                                                 latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_network4)));
 
                                     } else if(obj.getString("network").equals(listReseau.get(4))) {
-                                        //Creating Legende view .
-                                        //Creating LinearLayout.
-                                        LinearLayout Horizontallinearlayout = new LinearLayout(MapsActivity.this);
 
-                                        //Setting up LinearLayout Orientation
-                                        Horizontallinearlayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                                        LayoutParams Horizontallinearlayoutlayoutparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
-
-                                        sv.addView(Horizontallinearlayout, Horizontallinearlayoutlayoutparams);
-
-                                        LayoutParams LayoutParamsview = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-                                        TextView text1 = new TextView(MapsActivity.this);
-                                        text1.setText(obj.getString("network"));
-                                        text1.setLayoutParams(LayoutParamsview);
-                                        ImageView image1 = new ImageView(MapsActivity.this);
-                                        image1.setImageResource(R.drawable.location_network5);
-                                        image1.setLayoutParams(LayoutParamsview);
-                                        Horizontallinearlayout.addView(text1);
                                         map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
                                                 latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_network5)));
 
                                     } else if(obj.getString("network").equals(listReseau.get(5))) {
-                                        //Creating Legende view .
-                                        //Creating LinearLayout.
-                                        LinearLayout Horizontallinearlayout = new LinearLayout(MapsActivity.this);
 
-                                        //Setting up LinearLayout Orientation
-                                        Horizontallinearlayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                                        LayoutParams Horizontallinearlayoutlayoutparams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
-
-                                        sv.addView(Horizontallinearlayout, Horizontallinearlayoutlayoutparams);
-
-                                        LayoutParams LayoutParamsview = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-                                        TextView text1 = new TextView(MapsActivity.this);
-                                        text1.setText(obj.getString("network"));
-                                        text1.setLayoutParams(LayoutParamsview);
-                                        ImageView image1 = new ImageView(MapsActivity.this);
-                                        image1.setImageResource(R.drawable.location_network5);
-                                        image1.setLayoutParams(LayoutParamsview);
-                                        Horizontallinearlayout.addView(text1);
                                         map.addMarker(new MarkerOptions().title(obj.getString("lastname")).position(
-                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_member)));
+                                                latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_network6)));
 
                                     } else if(obj.getString("network").equals(listReseau.get(6))) {
 
@@ -1065,6 +948,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     }else  {
 
                                     }
+                                
 
 
 
@@ -2308,6 +2192,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Log.d(TAG, response.toString());
 
 
+                        int markers []= new int[] {R.drawable.location_network1,R.drawable.location_network2,R.drawable.location_network3,R.drawable.location_network4,R.drawable.location_network5,R.drawable.location_network6};
+                        int k =0;
+                        memberGroupList.clear();
+
+
                         // Parsing json
                         for (int i = 0; i < response.length(); i++) {
                             try {
@@ -2318,15 +2207,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
                                 Iterator<?> iter = obj.keys();
-                                reseauItem = new String[obj.length()];
+
                                 for (int j = 0; j< obj.length(); j++)
                                 {
 
                                     String key = (String) iter.next();
-
-
-
-
 
 
                                     if(obj.optString(key).trim()!=null) {
@@ -2337,16 +2222,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                         } else {
 
+
+
                                             // enleve le champs du pays
                                             if(data.equalsIgnoreCase(pays)) {
 
                                             } else {
+
+                                                legendeModel members = new legendeModel();
+                                                members.setLegende_name(obj.optString(key));
+                                                members.setLegende_picture(markers[k]);
+                                                // adding movie to movies array
+                                                memberGroupList.add(members);
+                                                k++;
                                                 // ajoute les autres champs
                                                 listReseau.add(obj.optString(key));
+
+
                                             }
 
 
                                         }
+
 
 
                                     } else {
@@ -2361,10 +2258,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
+
+
+
+
+
+
+
+
+
                             } catch (JSONException e) {
                                 hidePDialog();
 
                             }
+
+
+                            if (memberGroupList!=null) {
+                                adapter = new LegendeAdapter(MapsActivity.this, memberGroupList);
+                            }
+                            sv.setAdapter(adapter);
+
 
                         }
 
